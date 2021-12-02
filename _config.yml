@@ -1,21 +1,7 @@
 theme: jekyll-theme-architect
-
+title:            Yiheng Chen
 markdown:         redcarpet
-highlighter:      rouge
+description:      '利用有限的光阴探索无限的可能'
 
 # Permalinks
 permalink:        pretty
-
-# Setup
-title:            Yiheng Chen
-tagline:          ''
-description:      '利用有限的光阴探索无限的可能'
-name:             ''
-url:              http://maakabaka.github.io
-baseurl:          http://maakabaka.github.io/
-
-author:
-  name:           'Yiheng Chen'
-  url:            http://maakabaka.github.io/
-
-paginate:         5
