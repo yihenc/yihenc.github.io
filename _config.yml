@@ -1,7 +1,7 @@
 # Setup
-title: Not Pure Poole
-description: A simple, beautiful, and powerful Jekyll theme for blogs
-url: https://vszhub.github.io
+title: Yiheng Chen
+description: 以生命的有限，探索世界的无限
+url: https://maakabaka.github.io
 avatar: /avatar.jpeg
 paginate: 5
 permalink: pretty
@@ -54,6 +54,6 @@ sass:
 
 # Specify the author for blog posts
 author:
-  name: Songzi Vong
-  url: https://github.com/vszhub/
-  email: vszhub@gmail.com
+  name: Yiheng Chen
+  url: https://github.com/maakabaka
+  email: yihengchen@mail.ustc.edu.cn
