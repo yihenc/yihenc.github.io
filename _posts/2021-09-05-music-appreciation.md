@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 假语言音乐的鉴赏
+title: **假语言音乐的鉴赏**
 tags: music
 date: 2021-09-05 15:32 +0800
 excerpt: "音乐本身就是语言，所以你无需加入其它语言。"
