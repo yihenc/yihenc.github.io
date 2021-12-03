@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Moon Garden(Novel)
+title: 月神的花园(小说)
 tags:
 - Novel
 - Fantasy
