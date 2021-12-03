@@ -1,4 +1,7 @@
-
+---
+layout: page
+title: About Me
+---
 
 ### 小恒恒
 
