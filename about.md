@@ -9,7 +9,7 @@ title: About Me
 
 ### **Language**
 
-#### Mandarin: native | English: Toefl 103  | Japanese : learning
+#### Mandarin: native | English: Toefl 103  | Japanese : basic
 
 ------
 
