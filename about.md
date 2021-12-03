@@ -7,13 +7,13 @@ title: About Me
 
 ------
 
-### **语言**
+### **Language**
 
-#### 英语  Toefl 103  |  日语在学
+#### Mandarin: native | English: Toefl 103  | Japanese : learning
 
 ------
 
-### **教育经历**
+### **Education Experience**
 
 #### *2021, HKU research on AI&Medicine*
 
