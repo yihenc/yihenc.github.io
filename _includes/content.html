@@ -8,7 +8,7 @@
   {%- if year_from == nil or year_from == year_to -%}
     {%- assign year_string = year_from -%}
   {%- else -%}
-    {%- assign year_string = year_from | append: '&nbsp;}
+    {%- assign year_string ='2021'}
   {%- endif -%}
   <small>
     &copy; {{ year_string }} {% if site.author %}<a href="{{ site.author.url }}">{{ site.author.name }}</a>{% endif %}. All rights reserved.
