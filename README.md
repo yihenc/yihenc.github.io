@@ -1,10 +1,6 @@
 # About
 This is the source code for my personal website.
-Unless stated otherwise, all content is MIT-licensed,
-and some of the CV portions are created with the code
-in the [dekura/cv](https://github.com/dekura/cv) repo.
-
-The oringinal repo comes from [bamos/cv](https://github.com/bamos/cv)
+Unless stated otherwise, all content is MIT-licensed.
 
 # w3c compliance continuous integration
 Travis CI builds the static website with Jekyll and uses
