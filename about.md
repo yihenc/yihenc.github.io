@@ -3,6 +3,8 @@ layout: page
 title:
 ---
 
-![avatar](https://github.com/yihenc/yihenc.github.io/blob/main/resume1.jpg)
-![avatar](https://github.com/yihenc/yihenc.github.io/blob/main/resume2.jpg)
+![pic1](resume1.jpg)
+![pic2](resume2.jpg)
+
+https://github.com/yihenc/yihenc.github.io/blob/main/
 
