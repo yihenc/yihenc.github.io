@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About Me
+title:
 ---
 
 ![avatar](https://github.com/yihenc/yihenc.github.io/blob/main/resume1.jpg)
