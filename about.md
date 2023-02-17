@@ -3,7 +3,6 @@ layout: page
 title: About Me
 ---
 
-![avatar](resume1.png)  
-
-![avatar](resume2.png)
+![avatar](yihenc.github.io/resume1.png)  
+![avatar](yihenc.github.io/resume2.png)
 
