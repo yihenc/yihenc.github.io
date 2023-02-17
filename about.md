@@ -1,6 +1,6 @@
 ---
 layout: page
-title: <center>Yiheng Chen</center>
+title: 
 ---
 
 ![pic1](resume1.jpg)
