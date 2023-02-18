@@ -17,7 +17,7 @@ title:
 
 Yiheng Chen
 
-Cell: 949\-678\-3408  |  Email: [lunatears3@gmail\.com](mailto:lunatears3@gmail.com)  |  [LinkedIn](https://www.linkedin.com/in/yiheng-chen-840345247/)  |  [GitHub](https://github.com/maakabaka)
+
 
 Summary	
 
