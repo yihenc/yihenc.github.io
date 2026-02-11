@@ -1,90 +1,61 @@
-// Sidebar
-//
-// Styles for the sidebar.
+// Sidebar — repurposed as hero header content
+// The old sidebar is now a compact hero section at the top
 
-.masthead {
-  text-align: center;
-  margin: auto;
-  width: 100%;
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+.hero-identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.avatar-image {
-  width: 30%;
-  height: auto;
+.hero-avatar {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
 }
 
-.masthead-title {
-  padding: 0;
+.hero-text h1 {
+  font-size: 1.375rem;
+  font-weight: 600;
   margin: 0;
-  font-size: 2rem;
-  font-weight: 900;
-
-  a:hover,
-  a:focus {
-    color: var(--link-hover-color);
-  }
-}
-
-.masthead-tagline {
-  padding: 0;
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 400;
-  opacity: .7;
-}
-
-.navigation-list {
-  margin-top: var(--spacer-2);
-  padding: 0;
-  list-style: none;
-}
-
-.navigation-item {
-  display: block;
-  margin-bottom: var(--spacer);
-}
-
-.navigation-item a {
-  background: transparent;
   color: inherit;
-  letter-spacing: 0.05em;
-  font-size: 90%;
-  border-bottom: 2px solid;
-  border-color: inherit;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
 
-  &:hover,
-  &:focus {
-    color: var(--link-hover-color);
+.hero-text p {
+  font-size: 0.875rem;
+  margin: 0.125rem 0 0;
+  opacity: 0.7;
+}
+
+// Legacy classes — keep for compatibility but hide
+.masthead {
+  display: none;
+}
+
+.sidebar-left {
+  display: none;
+}
+
+.sidebar-right {
+  display: none;
+}
+
+@media (max-width: $sm-width) {
+  .hero-avatar {
+    width: 44px;
+    height: 44px;
   }
-}
 
-.social {
-  margin-top: var(--spacer-2);
-  font-size: 150%;
-  white-space: normal;
-  line-height: .5;
-}
-
-.social-icon {
-  padding: var(--spacer);
-  &:hover,
-  &:focus {
-    color: var(--link-hover-color);
-    background-color: transparent;
+  .hero-text h1 {
+    font-size: 1.125rem;
   }
-}
 
-@media (max-width: $md-width) {
-  .avatar-image {
-    width: 15%;
+  .hero-text p {
+    font-size: 0.8125rem;
   }
 }

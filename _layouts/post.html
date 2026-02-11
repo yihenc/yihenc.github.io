@@ -8,14 +8,14 @@ layout: default
     {%- assign date_format = site.date_format | default: "%-d %b %Y" -%}
     <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: date_format }}</time>
     {%- if page.last_modified_at -%}
-      <span> ~ </span>
+      <span>&middot;</span>
       {%- assign mdate = page.last_modified_at | date_to_xmlschema -%}
       <time datetime="{{ mdate }}" itemprop="dateModified">
-        {{ mdate | date: date_format }}
+        Updated {{ mdate | date: date_format }}
       </time>
     {%- endif -%}
     {%- if page.author -%}
-      <span> • </span>
+      <span>&middot;</span>
       {% for author in page.author %}
         <span itemprop="author" itemscope itemtype="http://schema.org/Person">
           {{ author }}
@@ -24,6 +24,10 @@ layout: default
       {% endfor %}
     {%- endif -%}
   </div>
+
+  {% if page.toc %}
+    {% include sidebar-right.html %}
+  {% endif %}
 
   {{ content }}
 
@@ -38,7 +42,7 @@ layout: default
 
 {% if site.related_posts != empty %}
 <aside class="related">
-  <h2>Related posts</h2>
+  <h2>Related Posts</h2>
   <ul class="related-posts">
     {% for post in site.related_posts limit:3 %}
       <li>

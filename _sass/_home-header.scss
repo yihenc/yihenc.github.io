@@ -1,29 +1,34 @@
-// Home Header
-//
-// Styles for the home header.
+// Home Header — minimal archive navigation
+
+.home-header {
+  margin-top: 0;
+  margin-bottom: var(--spacer-2);
+}
 
 .home-header-bar {
   width: 100%;
-  height: 100%;
-
-  -webkit-box-shadow: 0 1em 1em -.9em var(--border-color);
-     -moz-box-shadow: 0 1em 1em -.9em var(--border-color);
-          box-shadow: 0 1em 1em -.9em var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: var(--spacer-2);
 }
 
 .home-header-menu {
   a {
-    border-bottom: 1px solid rgba(0, 0, 0, 0);
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+    text-decoration: none;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s ease;
 
     &:hover,
     &:focus {
-      color: inherit;
-      background-color: inherit;
-      border-bottom-color: var(--link-color);
+      color: var(--heading-color);
     }
   }
 
   .current-item {
-    border-bottom-color: var(--link-color);
+    color: var(--heading-color);
+    border-bottom-color: var(--accent);
   }
 }

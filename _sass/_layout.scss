@@ -1,77 +1,187 @@
-// Layout
-//
-// Styles for managing the structural hierarchy of the site.
+// Layout — centered single-column, content-focused
 
-.container {
-  padding: 0;
-  margin: 0;
-}
-
-.home-header {
-  margin-top: -1em;
-  margin-bottom: var(--spacer-3);
-}
-
-.content {
-  padding-top: var(--spacer-2);
-  padding-left: var(--spacer-2);
-  padding-right: var(--spacer-2);
-  margin-left:  auto;
-  margin-right: auto;
+.site-wrapper {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-.sidebar-left {
+// Hero section with subtle wallpaper
+.site-hero {
+  position: relative;
+  overflow: hidden;
+  background: center / cover no-repeat;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 24, 22, 0.55) 0%,
+      rgba(26, 24, 22, 0.7) 100%
+    );
+  }
+}
+
+.site-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--content-wide);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 2.5rem;
+  color: #faf9f5;
+}
+
+// Top navigation bar
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--body-bg);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.site-nav-inner {
+  max-width: var(--content-wide);
+  margin: 0 auto;
+  padding: 0 1.5rem;
   display: flex;
-  padding: var(--spacer);
-  background: center / cover;
-  height: 100vh;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
 }
 
-footer {
-  margin-top: var(--spacer-3);
-  margin-bottom: var(--spacer-3);
+.site-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  text-decoration: none;
+  color: var(--heading-color);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
 }
 
-@media (min-width: $md-width) {
-  .content {
-    padding-top: var(--spacer-3);
-    padding-left: var(--spacer-3);
-    padding-right: var(--spacer-3);
-    margin-left: 25%;
+.site-nav-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.site-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav-links a {
+  font-size: 0.8125rem;
+  color: var(--gray-500);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0;
+  border-bottom: 1.5px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+
+  &:hover,
+  &:focus {
+    color: var(--heading-color);
   }
 
-  .sidebar-left {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-  }
-
-  .home-header {
-    margin-top: -2em;
+  &.active {
+    color: var(--heading-color);
+    border-bottom-color: var(--accent);
   }
 }
 
-@media (min-width: $lg-width) {
-  .sidebar-right {
-    display: block;
+.site-nav-social {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  a {
+    color: var(--gray-400);
+    font-size: 0.875rem;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--accent);
+    }
   }
 }
 
-@media (max-width: $lg-width) {
-  .sidebar-right {
+// Main content area
+.site-content {
+  flex: 1;
+  max-width: var(--content-wide);
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+// Footer
+.site-footer {
+  max-width: var(--content-wide);
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+
+  small {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+
+    a {
+      color: var(--gray-500);
+      text-decoration-line: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 2px;
+
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $md-width) {
+  .site-hero-inner {
+    padding: 2.5rem 1.25rem 2rem;
+  }
+
+  .site-content {
+    padding: 2rem 1.25rem;
+  }
+
+  .site-nav-inner {
+    padding: 0 1.25rem;
+  }
+
+  .site-nav-social {
     display: none;
   }
 }
 
-@media (max-width: $md-width) {
-  .content {
-    width: 100%;
+@media (max-width: $sm-width) {
+  .site-hero-inner {
+    padding: 2rem 1rem 1.5rem;
   }
-}
 
-@media (min-width: $md-width) and (max-width: $lg-width) {
-  .content {
-    width: 75%;
+  .site-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .site-nav-inner {
+    padding: 0 1rem;
+    height: 48px;
   }
 }

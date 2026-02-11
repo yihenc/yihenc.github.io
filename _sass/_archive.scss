@@ -1,6 +1,4 @@
-// Archive
-//
-// Styles for archive pages.
+// Archive — clean listing pages
 
 .taxonomies-wrapper {
   margin-top: var(--spacer-2);
@@ -10,35 +8,49 @@
 .taxonomies {
   list-style: none;
   display: grid;
-  grid-column-gap: 2em;
+  grid-column-gap: 1.5rem;
   grid-template-columns: repeat(3, 1fr);
   margin: 0;
   padding: 0;
-  font-weight: bold;
 
   .taxonomy {
     display: flex;
-    padding: 0.25em 0;
+    padding: 0.5rem 0;
     justify-content: space-between;
-    color: inherit;
+    color: var(--heading-color);
     text-decoration: none;
-    border-bottom: 1px solid;
-    margin-bottom: var(--spacer);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--accent);
+    }
   }
 }
 
 .post-list-by-taxonomy {
   time {
     font-family: var(--code-font);
+    font-size: 0.8125rem;
+    color: var(--gray-500);
   }
 }
 
 .back-to-top {
   display: block;
-  font-size: 0.8em;
+  font-size: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   text-align: right;
   text-decoration: none;
+  color: var(--gray-500);
+
+  &:hover {
+    color: var(--accent);
+  }
 }
 
 @media (max-width: $sm-width) {

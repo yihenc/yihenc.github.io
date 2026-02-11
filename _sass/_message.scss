@@ -1,12 +1,11 @@
-// Messages
-//
-// Show alert messages to users. You may add it to single elements like a `<p>`,
-// or to a parent if there are multiple elements to show.
+// Messages — subtle alert boxes
 
 .message {
-  padding: var(--spacer);
-  margin-bottom: var(--spacer);
-  color: var(--gray-900);
-  background-color: var(--yellow-100);
-  border-radius: var(--border-radius);
+  padding: 0.875rem 1.25rem;
+  margin-bottom: var(--spacer-2);
+  color: var(--gray-700);
+  background-color: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  font-size: 0.9375rem;
 }

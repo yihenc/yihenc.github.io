@@ -1,69 +1,93 @@
+// Variables — Anthropic-inspired warm palette
+//
+// A restrained, warm color system focused on readability and calm.
+
 :root {
-  --gray-000: #f8f9fa;
-  --gray-100: #f1f3f5;
-  --gray-200: #e9ecef;
-  --gray-300: #dee2e6;
-  --gray-400: #ced4da;
-  --gray-500: #adb5bd;
-  --gray-600: #868e96;
-  --gray-700: #495057;
-  --gray-800: #343a40;
-  --gray-900: #212529;
+  // Warm neutrals (ivory → charcoal)
+  --gray-000: #faf9f5;
+  --gray-050: #f5f3ee;
+  --gray-100: #edeae3;
+  --gray-200: #e5e2db;
+  --gray-300: #d4d0c8;
+  --gray-400: #b8b3a9;
+  --gray-500: #9b9590;
+  --gray-600: #6b6560;
+  --gray-700: #4a4541;
+  --gray-800: #2a2725;
+  --gray-900: #1a1816;
 
-  --red: #fa5252;
-  --pink: #e64980;
-  --grape: #be4bdb;
-  --purple: #7950f2;
-  --indigo: #4c6ef5;
-  --blue: #228be6;
-  --cyan: #15aabf;
-  --teal: #12b886;
-  --green: #40c057;
-  --yellow: #fab005;
-  --orange: #fd7e14;
+  // Accent — copper / terracotta
+  --accent: #c4785c;
+  --accent-hover: #b06a50;
+  --accent-light: rgba(196, 120, 92, 0.08);
+  --accent-border: rgba(196, 120, 92, 0.2);
 
-  --blue-300: #74c0fc;
-  --blue-400: #4dabf7;
-  --yellow-100: #fff3bf;
+  // Semantic
+  --red: #c0392b;
+  --green: #27ae60;
+  --yellow-100: #fdf6e3;
 
-  --body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --body-font-size: 18px;
-  --body-line-height: 1.5;
+  // Typography
+  --body-font: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --body-font-size: 17px;
+  --body-line-height: 1.65;
   --body-color: var(--gray-700);
-  --body-bg: #fff;
+  --body-bg: var(--gray-000);
 
-  --text-font: Times, "Times New Roman", "Free Serif", "Noto Serif", TimesNewRomanPSMT, "Droid Serif";
+  --text-font: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
-  --link-color: var(--blue);
-  --link-hover-color: #1c7ed6;
+  --link-color: var(--accent);
+  --link-hover-color: var(--accent-hover);
 
   --heading-color: var(--gray-900);
 
-  --border-color: var(--gray-300);
-  --border-radius: .25rem;
+  --border-color: var(--gray-200);
+  --border-radius: 6px;
 
-  --code-font: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --code-color: var(--grape);
-  --code-bg: #fbf1c7;
+  --code-font: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --code-color: var(--accent);
+  --code-bg: var(--gray-050);
 
   --spacer: 1rem;
-  --spacer-2: calc(var(--spacer) * 1.5);
-  --spacer-3: calc(var(--spacer) * 3);
+  --spacer-2: 1.5rem;
+  --spacer-3: 3rem;
+
+  // Content width
+  --content-width: 680px;
+  --content-wide: 800px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --body-color: var(--gray-000);
-    --body-bg: var(--gray-800);
+    --gray-000: #1a1916;
+    --gray-050: #222120;
+    --gray-100: #2a2928;
+    --gray-200: #3a3836;
+    --gray-300: #4a4846;
+    --gray-400: #6b6560;
+    --gray-500: #9b9590;
+    --gray-600: #b8b3a9;
+    --gray-700: #d4d0c8;
+    --gray-800: #edeae3;
+    --gray-900: #f5f3ee;
 
-    --heading-color: #fff;
+    --accent: #d4906e;
+    --accent-hover: #e0a080;
+    --accent-light: rgba(212, 144, 110, 0.1);
+    --accent-border: rgba(212, 144, 110, 0.25);
 
-    --link-color: var(--blue-300);
-    --link-hover-color: var(--blue-400);
+    --body-color: var(--gray-700);
+    --body-bg: #1a1916;
 
-    --border-color: rgba(255,255,255,.15);
+    --heading-color: var(--gray-900);
 
-    --code-bg: #282828;
+    --link-color: var(--accent);
+    --link-hover-color: var(--accent-hover);
+
+    --border-color: var(--gray-200);
+
+    --code-bg: #222120;
+    --yellow-100: #2a2725;
   }
 }
 

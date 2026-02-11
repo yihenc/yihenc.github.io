@@ -4,37 +4,94 @@
   {% include head.html %}
 
   <body>
+    <div class="site-wrapper">
 
-    <div class="container pure-g">
-      
-      {%- assign cover_bg_color = site.cover_bg_color | default: "rgb(255, 255, 255)" -%}
-
-      {%- assign cover_color    = site.cover_color    | default: "rgb(255, 255, 255)" -%}
-      {%- assign cover_image    = site.cover_image -%}
-      {%- if page.cover_bg_color -%}
-        {%- assign cover_bg_color  = page.cover_bg_color -%}
-      {%- endif -%}
-      {%- if page.cover_color -%}
-        {%- assign cover_color     = page.cover_color -%}
-      {%- endif -%}
+      {%- assign cover_image = site.cover_image -%}
       {%- if page.cover_image -%}
-        {%- assign cover_image     = page.cover_image -%}
+        {%- assign cover_image = page.cover_image -%}
       {%- endif -%}
-      <div class="sidebar-left pure-u-1 pure-u-md-1-4" style="background-color: {{ cover_bg_color }}; color: {{ cover_color}}; {% if cover_image %}background-image: url({{ cover_image | relative_url }});{% endif %}">
-        {%- include sidebar-left.html -%}
+
+      <!-- Hero with subtle wallpaper -->
+      {% if page.layout == 'home' %}
+      <div class="site-hero" {% if cover_image %}style="background-image: url({{ cover_image | relative_url }})"{% endif %}>
+        <div class="site-hero-inner">
+          <div class="hero-identity">
+            {% if site.avatar -%}
+              {%- if site.avatar contains "://" -%}
+                {%- assign avatar = site.avatar -%}
+              {%- else -%}
+                {%- assign avatar = site.avatar | relative_url -%}
+              {%- endif -%}
+              <img src="{{ avatar }}" class="hero-avatar" alt="{{ site.author.name }}">
+            {%- endif %}
+            <div class="hero-text">
+              <h1>{{ site.title }}</h1>
+              <p>{{ site.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Navigation -->
+      <nav class="site-nav">
+        <div class="site-nav-inner">
+          <a href="{{ "/" | relative_url }}" class="site-nav-brand">
+            {% if site.avatar -%}
+              {%- if site.avatar contains "://" -%}
+                {%- assign avatar_nav = site.avatar -%}
+              {%- else -%}
+                {%- assign avatar_nav = site.avatar | relative_url -%}
+              {%- endif -%}
+              <img src="{{ avatar_nav }}" class="site-nav-avatar" alt="{{ site.author.name }}">
+            {%- endif %}
+            {{ site.title }}
+          </a>
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            {%- if site.data.navigation -%}
+            <ul class="site-nav-links">
+              {%- for nav in site.data.navigation -%}
+                <li>
+                  <a href="{{ nav.url | relative_url }}"{% if page.url == nav.url %} class="active"{% endif %}>{{ nav.title | escape }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+            {%- endif -%}
+            {% if site.data.social -%}
+            <div class="site-nav-social">
+              {% for social in site.data.social -%}
+                <a href="{{ social.url }}" title="{{ social.title }}">
+                  <i class="{{ social.icon | default: 'fas fa-link' }}"></i>
+                </a>
+              {%- endfor %}
+            </div>
+            {%- endif %}
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="site-content">
+        {{ content }}
       </div>
 
-      <div class="content pure-u-1 pure-u-md-1-2">
-        {%- include content.html -%}
-      </div>
-      <div class="sidebar-right pure-u-1 pure-u-md-1-4">
-        {%- include sidebar-right.html -%}
-      </div>
+      <!-- Footer -->
+      <footer class="site-footer">
+        {%- assign year_from = site.posts[-1].date | date: '%Y' -%}
+        {%- assign year_to   = site.time | date: '%Y' -%}
+        {%- if year_from == nil or year_from == year_to -%}
+          {%- assign year_string = year_from -%}
+        {%- else -%}
+          {%- assign year_string = year_from | append: '&nbsp;-&nbsp;' | append: year_to -%}
+        {%- endif -%}
+        <small>
+          &copy; {{ year_string }} {% if site.author %}<a href="{{ site.author.url }}">{{ site.author.name }}</a>{% endif %}
+        </small>
+      </footer>
+
     </div>
 
     <script async src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
-
-    {%- include scroll.html -%}
 
     {%- if page.math -%}
       {% include mathjax.html %}

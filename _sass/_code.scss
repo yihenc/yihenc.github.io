@@ -1,7 +1,4 @@
-// Code
-//
-// Inline and block-level code snippets. Includes tweaks to syntax highlighted
-// snippets from Pygments/Rouge and Gist embeds.
+// Code — clean, minimal code blocks
 
 code,
 pre {
@@ -9,29 +6,43 @@ pre {
 }
 
 code {
-  font-size: 85%;
+  font-size: 0.8125rem;
+  padding: 0.15rem 0.4rem;
+  background: var(--code-bg);
+  border-radius: 4px;
+  color: var(--code-color);
 }
 
 pre {
   display: block;
   margin-top: 0;
-  margin-bottom: var(--spacer-3);
+  margin-bottom: var(--spacer-2);
   overflow: auto;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+
+  code {
+    padding: 0;
+    background: transparent;
+    color: inherit;
+  }
 }
 
 .highlight {
-  padding: var(--spacer);
-  margin-bottom: var(--spacer);
+  padding: 1rem 1.25rem;
+  margin-bottom: var(--spacer-2);
   background-color: var(--code-bg);
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
+  overflow: auto;
 
   pre {
     margin-bottom: 0;
   }
 
-  // Triple backticks (code fencing) doubles the .highlight elements
   .highlight {
     padding: 0;
+    border: none;
   }
 }
 
@@ -48,11 +59,11 @@ pre {
   .gutter {
     vertical-align: top;
     user-select: none;
-    opacity: .25;
+    opacity: 0.3;
+    padding-right: 1rem;
   }
 }
 
-// Gist via GitHub Pages
 .gist .markdown-body {
   padding: 15px !important;
 }
