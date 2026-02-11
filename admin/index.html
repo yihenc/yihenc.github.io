@@ -1,0 +1,1726 @@
+---
+layout: null
+permalink: /admin/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — {{ site.title }}</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Fonts: Söhne-like clean sans-serif + refined serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- EasyMDE Markdown Editor -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
+
+  <!-- Marked.js for preview rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+
+  <style>
+    /* ===== CSS VARIABLES - Anthropic-inspired warm palette ===== */
+    :root {
+      --bg-primary: #faf9f5;
+      --bg-secondary: #f5f3ee;
+      --bg-tertiary: #edeae3;
+      --bg-elevated: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6560;
+      --text-tertiary: #9b9590;
+      --text-inverse: #faf9f5;
+      --accent: #c4785c;
+      --accent-hover: #b06a50;
+      --accent-light: rgba(196, 120, 92, 0.08);
+      --accent-border: rgba(196, 120, 92, 0.2);
+      --border: #e5e2db;
+      --border-strong: #d4d0c8;
+      --danger: #c0392b;
+      --danger-light: rgba(192, 57, 43, 0.06);
+      --danger-border: rgba(192, 57, 43, 0.15);
+      --success: #27ae60;
+      --success-light: rgba(39, 174, 96, 0.06);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Source Serif 4', Georgia, serif;
+      --font-mono: 'JetBrains Mono', 'Menlo', monospace;
+      --transition: 180ms ease;
+    }
+
+    /* ===== DARK MODE ===== */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1a1916;
+        --bg-secondary: #222120;
+        --bg-tertiary: #2a2928;
+        --bg-elevated: #2a2928;
+        --text-primary: #ece8e1;
+        --text-secondary: #a8a29e;
+        --text-tertiary: #78716c;
+        --accent: #d4906e;
+        --accent-hover: #e0a080;
+        --accent-light: rgba(212, 144, 110, 0.1);
+        --accent-border: rgba(212, 144, 110, 0.25);
+        --border: #3a3836;
+        --border-strong: #4a4846;
+        --danger: #e74c3c;
+        --danger-light: rgba(231, 76, 60, 0.1);
+        --danger-border: rgba(231, 76, 60, 0.2);
+        --success: #2ecc71;
+        --success-light: rgba(46, 204, 113, 0.1);
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+        --shadow-md: 0 2px 8px rgba(0,0,0,0.3);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
+      }
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== LAYOUT SHELLS ===== */
+    .app {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .app.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== LOGIN SCREEN ===== */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-primary);
+      padding: 1.5rem;
+    }
+
+    #login-screen.active {
+      display: flex;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 380px;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .login-brand {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .login-brand-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .login-brand-icon svg {
+      width: 24px;
+      height: 24px;
+      color: var(--text-inverse);
+    }
+
+    .login-brand h1 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.35rem;
+    }
+
+    .login-brand p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .login-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .login-field {
+      margin-bottom: 1.25rem;
+    }
+
+    .login-field label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.01em;
+    }
+
+    .login-field input {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+
+    .login-field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    .login-field input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .login-hint {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      margin-top: 0.375rem;
+      line-height: 1.5;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 0.6875rem 1rem;
+      background: var(--accent);
+      color: var(--text-inverse);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), transform 80ms ease;
+      margin-top: 0.25rem;
+    }
+
+    .login-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .login-btn:active {
+      transform: scale(0.985);
+    }
+
+    .login-error {
+      display: none;
+      font-size: 0.8125rem;
+      color: var(--danger);
+      text-align: center;
+      margin-top: 1rem;
+      padding: 0.625rem;
+      background: var(--danger-light);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--danger-border);
+    }
+
+    .login-error.visible {
+      display: block;
+      animation: shake 0.4s ease;
+    }
+
+    /* ===== TOP HEADER BAR ===== */
+    .header {
+      height: 56px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .header-icon svg {
+      width: 16px;
+      height: 16px;
+      color: var(--text-inverse);
+    }
+
+    .header-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .header-blog-link {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .header-blog-link:hover {
+      color: var(--accent);
+    }
+
+    .header-blog-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .btn-logout {
+      font-size: 0.8125rem;
+      color: var(--text-tertiary);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.375rem 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: all var(--transition);
+    }
+
+    .btn-logout:hover {
+      color: var(--danger);
+      border-color: var(--danger-border);
+      background: var(--danger-light);
+    }
+
+    /* ===== MAIN CONTENT AREA ===== */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== POST LIST VIEW ===== */
+    .list-view {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+      gap: 1rem;
+    }
+
+    .list-header h2 {
+      font-family: var(--font-serif);
+      font-size: 1.375rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .list-count {
+      font-size: 0.8125rem;
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+
+    .btn-new {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: var(--text-inverse);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), transform 80ms ease;
+      white-space: nowrap;
+    }
+
+    .btn-new svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .btn-new:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-new:active {
+      transform: scale(0.97);
+    }
+
+    /* Post cards */
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .post-card {
+      background: var(--bg-elevated);
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      transition: background var(--transition);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .post-card:hover {
+      background: var(--accent-light);
+    }
+
+    .post-card-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .post-card-title {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .post-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .post-card-date {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+
+    .post-card-tag {
+      font-size: 0.6875rem;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      padding: 0.125rem 0.5rem;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .post-card-actions {
+      display: flex;
+      gap: 0.25rem;
+      opacity: 0;
+      transition: opacity var(--transition);
+      flex-shrink: 0;
+    }
+
+    .post-card:hover .post-card-actions {
+      opacity: 1;
+    }
+
+    .post-action-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text-tertiary);
+      transition: all var(--transition);
+    }
+
+    .post-action-btn:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .post-action-btn.danger:hover {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .post-action-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+    }
+
+    .empty-state-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1rem;
+      color: var(--text-tertiary);
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 500;
+      margin-bottom: 0.375rem;
+    }
+
+    .empty-state p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* Loading state */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem;
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    /* ===== EDITOR VIEW ===== */
+    .editor-view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .editor-view.active {
+      display: flex;
+    }
+
+    .editor-toolbar-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .editor-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .btn-back {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      padding: 0.375rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .btn-back:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .btn-back svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .editor-status {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .editor-toolbar-right {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .btn-save {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.4375rem 1rem;
+      background: var(--accent);
+      color: var(--text-inverse);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-save:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-save:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-save svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Editor form fields */
+    .editor-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .editor-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.375rem;
+      letter-spacing: 0.01em;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    .field input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .field-hint {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      margin-top: 0.25rem;
+    }
+
+    .tag-input-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+      padding: 0.375rem 0.625rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      cursor: text;
+      min-height: 38px;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .tag-input-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.125rem 0.5rem;
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+
+    .tag-pill button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--accent);
+      padding: 0;
+      width: 14px;
+      height: 14px;
+      opacity: 0.6;
+      transition: opacity var(--transition);
+    }
+
+    .tag-pill button:hover {
+      opacity: 1;
+    }
+
+    .tag-input {
+      flex: 1;
+      min-width: 80px;
+      border: none !important;
+      padding: 0.125rem 0 !important;
+      font-size: 0.8125rem !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      outline: none !important;
+    }
+
+    /* Checkboxes */
+    .field-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      margin-bottom: 1rem;
+    }
+
+    .field-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .field-checkbox label {
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      margin-bottom: 0;
+    }
+
+    /* ===== EASYMDE OVERRIDES ===== */
+    .EasyMDEContainer {
+      border: none !important;
+    }
+
+    .EasyMDEContainer .CodeMirror {
+      font-family: var(--font-mono) !important;
+      font-size: 0.875rem !important;
+      line-height: 1.7 !important;
+      border: 1px solid var(--border) !important;
+      border-radius: var(--radius-sm) !important;
+      background: var(--bg-elevated) !important;
+      color: var(--text-primary) !important;
+      padding: 0.5rem !important;
+      min-height: 360px;
+    }
+
+    .EasyMDEContainer .CodeMirror-focused {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px var(--accent-light) !important;
+    }
+
+    .EasyMDEContainer .CodeMirror-cursor {
+      border-left-color: var(--accent) !important;
+    }
+
+    .EasyMDEContainer .editor-toolbar {
+      border: 1px solid var(--border) !important;
+      border-bottom: none !important;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important;
+      background: var(--bg-secondary) !important;
+      padding: 0.375rem !important;
+      opacity: 1 !important;
+    }
+
+    .EasyMDEContainer .editor-toolbar button {
+      color: var(--text-secondary) !important;
+      border-radius: 4px !important;
+      width: 30px !important;
+      height: 30px !important;
+    }
+
+    .EasyMDEContainer .editor-toolbar button:hover {
+      background: var(--bg-tertiary) !important;
+      color: var(--text-primary) !important;
+    }
+
+    .EasyMDEContainer .editor-toolbar button.active {
+      background: var(--accent-light) !important;
+      color: var(--accent) !important;
+    }
+
+    .EasyMDEContainer .editor-toolbar i.separator {
+      border-left-color: var(--border) !important;
+    }
+
+    .EasyMDEContainer .CodeMirror .CodeMirror-code .cm-header-1 {
+      font-size: 1.5em !important;
+    }
+
+    .EasyMDEContainer .CodeMirror .CodeMirror-code .cm-header-2 {
+      font-size: 1.3em !important;
+    }
+
+    .EasyMDEContainer .editor-preview,
+    .EasyMDEContainer .editor-preview-side {
+      font-family: var(--font-serif) !important;
+      font-size: 1rem !important;
+      line-height: 1.7 !important;
+      background: var(--bg-elevated) !important;
+      color: var(--text-primary) !important;
+      padding: 1.5rem !important;
+    }
+
+    .EasyMDEContainer .editor-preview pre,
+    .EasyMDEContainer .editor-preview-side pre {
+      font-family: var(--font-mono) !important;
+      background: var(--bg-secondary) !important;
+      padding: 1rem !important;
+      border-radius: var(--radius-sm) !important;
+      overflow-x: auto;
+    }
+
+    .EasyMDEContainer .editor-statusbar {
+      display: none !important;
+    }
+
+    .EasyMDEContainer .CodeMirror .CodeMirror-selected {
+      background: var(--accent-light) !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .EasyMDEContainer .CodeMirror .cm-s-easymde {
+        color: var(--text-primary) !important;
+      }
+      .EasyMDEContainer .CodeMirror .cm-s-easymde .cm-comment {
+        background: transparent !important;
+      }
+    }
+
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(calc(100% + 2rem));
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.21, 1.02, 0.73, 1);
+      box-shadow: var(--shadow-lg);
+      max-width: calc(100vw - 2rem);
+      text-align: center;
+    }
+
+    .toast.visible {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success {
+      background: #1a1a1a;
+      color: #faf9f5;
+    }
+
+    .toast.error {
+      background: var(--danger);
+      color: white;
+    }
+
+    /* ===== CONFIRM DIALOG ===== */
+    .dialog-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog-overlay.active {
+      display: flex;
+    }
+
+    .dialog-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      animation: fadeInUp 0.25s ease;
+    }
+
+    .dialog-box h3 {
+      font-family: var(--font-serif);
+      font-size: 1.125rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .dialog-box p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .dialog-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .btn-dialog {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-dialog.cancel {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .btn-dialog.cancel:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .btn-dialog.confirm-danger {
+      background: var(--danger);
+      color: white;
+      border: none;
+    }
+
+    .btn-dialog.confirm-danger:hover {
+      background: #a93226;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .list-view {
+        padding: 1.25rem 1rem;
+      }
+
+      .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .btn-new {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .field-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .post-card-actions {
+        opacity: 1;
+      }
+
+      .editor-toolbar-bar {
+        padding: 0.625rem 1rem;
+      }
+
+      .editor-body {
+        padding: 1rem;
+      }
+
+      .header {
+        padding: 0 1rem;
+      }
+
+      .post-card {
+        padding: 0.875rem 1rem;
+      }
+
+      .post-card-meta {
+        gap: 0.5rem;
+      }
+
+      .dialog-box {
+        padding: 1.5rem;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Post list animation */
+    .post-card {
+      animation: fadeInUp 0.3s ease backwards;
+    }
+    .post-card:nth-child(1) { animation-delay: 0s; }
+    .post-card:nth-child(2) { animation-delay: 0.04s; }
+    .post-card:nth-child(3) { animation-delay: 0.08s; }
+    .post-card:nth-child(4) { animation-delay: 0.12s; }
+    .post-card:nth-child(5) { animation-delay: 0.16s; }
+    .post-card:nth-child(6) { animation-delay: 0.2s; }
+    .post-card:nth-child(7) { animation-delay: 0.24s; }
+    .post-card:nth-child(8) { animation-delay: 0.28s; }
+    .post-card:nth-child(9) { animation-delay: 0.32s; }
+    .post-card:nth-child(10) { animation-delay: 0.36s; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div id="login-screen">
+    <div class="login-container">
+      <div class="login-brand">
+        <div class="login-brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h1>Blog Admin</h1>
+        <p>{{ site.title }} &middot; Content Manager</p>
+      </div>
+      <div class="login-card">
+        <form id="login-form">
+          <div class="login-field">
+            <label for="admin-password">Password</label>
+            <input type="password" id="admin-password" placeholder="Enter admin password" autocomplete="current-password" required>
+          </div>
+          <div class="login-field">
+            <label for="github-token">GitHub Token</label>
+            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" required>
+            <div class="login-hint">Fine-grained PAT with Contents read/write on this repo</div>
+          </div>
+          <button type="submit" class="login-btn">Sign in</button>
+          <div id="login-error" class="login-error"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN APP ===== -->
+  <div id="admin-app" class="app">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="header-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <span class="header-title">Blog Admin</span>
+      </div>
+      <div class="header-right">
+        <a href="/" target="_blank" class="header-blog-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View Blog
+        </a>
+        <button class="btn-logout" onclick="logout()">Sign out</button>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Post List -->
+      <div id="list-view" class="list-view">
+        <div class="list-header">
+          <div>
+            <h2>Posts <span id="post-count" class="list-count"></span></h2>
+          </div>
+          <button class="btn-new" onclick="openEditor()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Post
+          </button>
+        </div>
+        <div id="post-list-container">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Editor -->
+      <div id="editor-view" class="editor-view">
+        <div class="editor-toolbar-bar">
+          <div class="editor-toolbar-left">
+            <button class="btn-back" onclick="closeEditor()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Posts
+            </button>
+            <span id="editor-status" class="editor-status"></span>
+          </div>
+          <div class="editor-toolbar-right">
+            <button class="btn-save" onclick="savePost()" id="btn-save">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Publish
+            </button>
+          </div>
+        </div>
+        <div class="editor-body">
+          <div class="editor-inner">
+            <div class="field">
+              <label for="post-title">Title</label>
+              <input type="text" id="post-title" placeholder="Enter post title...">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="post-date">Date</label>
+                <input type="date" id="post-date">
+              </div>
+              <div class="field">
+                <label>Tags</label>
+                <div class="tag-input-wrap" id="tag-container" onclick="document.getElementById('tag-input').focus()">
+                  <input type="text" id="tag-input" class="tag-input" placeholder="Type and press Enter...">
+                </div>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-checkbox">
+                <input type="checkbox" id="post-toc">
+                <label for="post-toc">Table of Contents</label>
+              </div>
+              <div class="field-checkbox">
+                <input type="checkbox" id="post-math">
+                <label for="post-math">MathJax Support</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Content</label>
+              <textarea id="md-editor"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Confirm Dialog -->
+  <div id="confirm-dialog" class="dialog-overlay">
+    <div class="dialog-box">
+      <h3 id="dialog-title">Delete Post?</h3>
+      <p id="dialog-message">This action cannot be undone. The post will be permanently removed.</p>
+      <div class="dialog-actions">
+        <button class="btn-dialog cancel" onclick="closeDialog()">Cancel</button>
+        <button class="btn-dialog confirm-danger" id="dialog-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== CONFIGURATION =====
+    const REPO_OWNER = 'yihenc';
+    const REPO_NAME = 'yihenc.github.io';
+    const BRANCH = 'main';
+    // SHA-256 hash of admin password — default is "admin" for first setup
+    // Replace with your own: run in browser console:
+    //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR_PASSWORD')).then(h => console.log([...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('')))
+    const PASSWORD_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+
+    // ===== STATE =====
+    let githubToken = '';
+    let posts = [];
+    let editingPost = null; // { path, sha, filename }
+    let easyMDE = null;
+    let currentTags = [];
+
+    // ===== AUTH =====
+    async function sha256(text) {
+      const encoded = new TextEncoder().encode(text);
+      const hash = await crypto.subtle.digest('SHA-256', encoded);
+      return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('admin-password').value;
+      const token = document.getElementById('github-token').value.trim();
+      const errorEl = document.getElementById('login-error');
+
+      // Check password
+      const hash = await sha256(password);
+      if (hash !== PASSWORD_HASH) {
+        errorEl.textContent = 'Incorrect password';
+        errorEl.classList.add('visible');
+        return;
+      }
+
+      // Validate token by making a test API call
+      try {
+        const resp = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!resp.ok) throw new Error('Invalid token or no repo access');
+      } catch (err) {
+        errorEl.textContent = 'Token validation failed: ' + err.message;
+        errorEl.classList.add('visible');
+        return;
+      }
+
+      githubToken = token;
+      sessionStorage.setItem('blog_admin_token', token);
+      showApp();
+    });
+
+    function showApp() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-app').classList.add('active');
+      loadPosts();
+    }
+
+    function logout() {
+      sessionStorage.removeItem('blog_admin_token');
+      githubToken = '';
+      location.reload();
+    }
+
+    // Auto-login if token exists in session
+    (function autoLogin() {
+      const token = sessionStorage.getItem('blog_admin_token');
+      if (token) {
+        githubToken = token;
+        showApp();
+      }
+    })();
+
+    // ===== GITHUB API =====
+    async function githubAPI(endpoint, options = {}) {
+      const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}${endpoint}`;
+      const resp = await fetch(url, {
+        ...options,
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+          ...options.headers,
+        }
+      });
+      if (!resp.ok) {
+        const errBody = await resp.json().catch(() => ({}));
+        throw new Error(errBody.message || `API error: ${resp.status}`);
+      }
+      return resp.json();
+    }
+
+    // ===== POSTS =====
+    async function loadPosts() {
+      const container = document.getElementById('post-list-container');
+      container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+      try {
+        const data = await githubAPI('/contents/_posts?ref=' + BRANCH);
+        posts = data
+          .filter(f => f.name.endsWith('.md'))
+          .sort((a, b) => b.name.localeCompare(a.name));
+
+        renderPostList();
+      } catch (err) {
+        container.innerHTML = `<div class="empty-state">
+          <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <h3>Failed to load</h3>
+          <p>${escapeHtml(err.message)}</p>
+        </div>`;
+      }
+    }
+
+    function renderPostList() {
+      const container = document.getElementById('post-list-container');
+      const countEl = document.getElementById('post-count');
+      countEl.textContent = `(${posts.length})`;
+
+      if (posts.length === 0) {
+        container.innerHTML = `<div class="empty-state">
+          <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <h3>No posts yet</h3>
+          <p>Create your first post to get started.</p>
+        </div>`;
+        return;
+      }
+
+      let html = '<div class="post-list">';
+      posts.forEach((post, i) => {
+        const info = parseFilename(post.name);
+        html += `
+          <div class="post-card" onclick="editPost(${i})" style="animation-delay: ${i * 0.04}s">
+            <div class="post-card-main">
+              <div class="post-card-title">${escapeHtml(info.title)}</div>
+              <div class="post-card-meta">
+                <span class="post-card-date">${info.date}</span>
+              </div>
+            </div>
+            <div class="post-card-actions">
+              <button class="post-action-btn" onclick="event.stopPropagation(); editPost(${i})" title="Edit">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="post-action-btn danger" onclick="event.stopPropagation(); confirmDelete(${i})" title="Delete">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          </div>`;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function parseFilename(filename) {
+      // e.g. "2020-09-29-welcome-to-not-pure-poole.md"
+      const match = filename.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
+      if (!match) return { date: '', title: filename, slug: filename };
+      return {
+        date: match[1],
+        title: match[2].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+        slug: match[2]
+      };
+    }
+
+    // ===== EDITOR =====
+    function initEditor() {
+      if (easyMDE) {
+        easyMDE.toTextArea();
+        easyMDE = null;
+      }
+      easyMDE = new EasyMDE({
+        element: document.getElementById('md-editor'),
+        spellChecker: false,
+        autosave: { enabled: false },
+        placeholder: 'Write your post content in Markdown...',
+        toolbar: [
+          'bold', 'italic', 'heading', '|',
+          'quote', 'unordered-list', 'ordered-list', '|',
+          'link', 'image', 'code', 'table', '|',
+          'preview', 'side-by-side', '|',
+          'guide'
+        ],
+        previewRender: function(text) {
+          return marked.parse(text);
+        },
+        status: false,
+      });
+    }
+
+    function openEditor(post = null) {
+      editingPost = post;
+      currentTags = [];
+
+      document.getElementById('list-view').style.display = 'none';
+      document.getElementById('editor-view').classList.add('active');
+
+      initEditor();
+
+      if (post) {
+        // Editing existing post
+        document.getElementById('editor-status').textContent = 'Loading...';
+        loadPostContent(post);
+      } else {
+        // New post
+        document.getElementById('editor-status').textContent = 'New post';
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('post-toc').checked = false;
+        document.getElementById('post-math').checked = false;
+        currentTags = [];
+        renderTags();
+        easyMDE.value('');
+      }
+    }
+
+    async function loadPostContent(post) {
+      try {
+        const data = await githubAPI(`/contents/${post.path}?ref=${BRANCH}`);
+        editingPost = { ...post, sha: data.sha };
+
+        const content = decodeBase64(data.content);
+        const parsed = parseFrontMatter(content);
+
+        document.getElementById('post-title').value = parsed.frontMatter.title || '';
+        document.getElementById('post-date').value = parsed.frontMatter.date
+          ? parsed.frontMatter.date.substring(0, 10)
+          : parseFilename(post.name).date;
+        document.getElementById('post-toc').checked = parsed.frontMatter.toc === true;
+        document.getElementById('post-math').checked = parsed.frontMatter.math === true;
+
+        currentTags = parsed.frontMatter.tags || [];
+        renderTags();
+
+        easyMDE.value(parsed.body);
+        document.getElementById('editor-status').textContent = `Editing: ${post.name}`;
+      } catch (err) {
+        showToast('Failed to load post: ' + err.message, 'error');
+        closeEditor();
+      }
+    }
+
+    function closeEditor() {
+      document.getElementById('editor-view').classList.remove('active');
+      document.getElementById('list-view').style.display = 'block';
+      if (easyMDE) {
+        easyMDE.toTextArea();
+        easyMDE = null;
+      }
+      editingPost = null;
+    }
+
+    async function editPost(index) {
+      const post = posts[index];
+      openEditor(post);
+    }
+
+    async function savePost() {
+      const title = document.getElementById('post-title').value.trim();
+      const date = document.getElementById('post-date').value;
+      const toc = document.getElementById('post-toc').checked;
+      const math = document.getElementById('post-math').checked;
+      const body = easyMDE.value().trim();
+
+      if (!title) {
+        showToast('Please enter a title', 'error');
+        return;
+      }
+      if (!date) {
+        showToast('Please select a date', 'error');
+        return;
+      }
+      if (!body) {
+        showToast('Please write some content', 'error');
+        return;
+      }
+
+      // Build front matter
+      let fm = `---\nlayout: post\ntitle: "${title.replace(/"/g, '\\"')}"\ndate: ${date} 00:00 +0000\n`;
+      if (currentTags.length) fm += `tags: [${currentTags.join(', ')}]\n`;
+      if (toc) fm += `toc: true\n`;
+      if (math) fm += `math: true\n`;
+      fm += `---\n`;
+
+      const fullContent = fm + body + '\n';
+      const slug = title.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .substring(0, 60);
+      const filename = `${date}-${slug}.md`;
+      const path = `_posts/${filename}`;
+
+      const btn = document.getElementById('btn-save');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner" style="width:14px;height:14px;border-width:2px;"></div> Saving...';
+
+      try {
+        const payload = {
+          message: editingPost
+            ? `Update: ${title}`
+            : `New post: ${title}`,
+          content: encodeBase64(fullContent),
+          branch: BRANCH,
+        };
+
+        if (editingPost && editingPost.sha) {
+          // If filename changed, delete old file and create new
+          if (editingPost.path !== path) {
+            await githubAPI(`/contents/${editingPost.path}`, {
+              method: 'DELETE',
+              body: JSON.stringify({
+                message: `Rename: ${editingPost.name} → ${filename}`,
+                sha: editingPost.sha,
+                branch: BRANCH,
+              })
+            });
+          } else {
+            payload.sha = editingPost.sha;
+          }
+        }
+
+        await githubAPI(`/contents/${path}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload),
+        });
+
+        showToast(editingPost ? 'Post updated successfully' : 'Post published successfully', 'success');
+        closeEditor();
+        loadPosts();
+      } catch (err) {
+        showToast('Save failed: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg> Publish';
+      }
+    }
+
+    // ===== DELETE =====
+    let deleteTarget = null;
+
+    function confirmDelete(index) {
+      deleteTarget = posts[index];
+      const info = parseFilename(deleteTarget.name);
+      document.getElementById('dialog-title').textContent = 'Delete Post?';
+      document.getElementById('dialog-message').textContent = `"${info.title}" will be permanently removed. This cannot be undone.`;
+      document.getElementById('dialog-confirm').onclick = executeDelete;
+      document.getElementById('confirm-dialog').classList.add('active');
+    }
+
+    function closeDialog() {
+      document.getElementById('confirm-dialog').classList.remove('active');
+      deleteTarget = null;
+    }
+
+    async function executeDelete() {
+      if (!deleteTarget) return;
+      closeDialog();
+
+      try {
+        const data = await githubAPI(`/contents/${deleteTarget.path}?ref=${BRANCH}`);
+        await githubAPI(`/contents/${deleteTarget.path}`, {
+          method: 'DELETE',
+          body: JSON.stringify({
+            message: `Delete: ${deleteTarget.name}`,
+            sha: data.sha,
+            branch: BRANCH,
+          })
+        });
+        showToast('Post deleted', 'success');
+        loadPosts();
+      } catch (err) {
+        showToast('Delete failed: ' + err.message, 'error');
+      }
+    }
+
+    // ===== TAGS =====
+    const tagInput = document.getElementById('tag-input');
+    tagInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const val = tagInput.value.trim();
+        if (val && !currentTags.includes(val)) {
+          currentTags.push(val);
+          renderTags();
+        }
+        tagInput.value = '';
+      }
+      if (e.key === 'Backspace' && !tagInput.value && currentTags.length) {
+        currentTags.pop();
+        renderTags();
+      }
+    });
+
+    function removeTag(index) {
+      currentTags.splice(index, 1);
+      renderTags();
+    }
+
+    function renderTags() {
+      const container = document.getElementById('tag-container');
+      const input = document.getElementById('tag-input');
+      // Remove all tag pills
+      container.querySelectorAll('.tag-pill').forEach(el => el.remove());
+      // Re-add tag pills before input
+      currentTags.forEach((tag, i) => {
+        const pill = document.createElement('span');
+        pill.className = 'tag-pill';
+        pill.innerHTML = `${escapeHtml(tag)}<button type="button" onclick="removeTag(${i})">&times;</button>`;
+        container.insertBefore(pill, input);
+      });
+    }
+
+    // ===== UTILITIES =====
+    function encodeBase64(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function decodeBase64(str) {
+      return decodeURIComponent(escape(atob(str.replace(/\n/g, ''))));
+    }
+
+    function parseFrontMatter(content) {
+      const match = content.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+      if (!match) return { frontMatter: {}, body: content };
+
+      const fmStr = match[1];
+      const body = match[2];
+      const fm = {};
+
+      fmStr.split('\n').forEach(line => {
+        const colonIndex = line.indexOf(':');
+        if (colonIndex === -1) return;
+        const key = line.substring(0, colonIndex).trim();
+        let val = line.substring(colonIndex + 1).trim();
+
+        // Parse arrays like [tag1, tag2]
+        if (val.startsWith('[') && val.endsWith(']')) {
+          val = val.slice(1, -1).split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+        }
+        // Parse booleans
+        else if (val === 'true') val = true;
+        else if (val === 'false') val = false;
+        // Strip quotes
+        else val = val.replace(/^["']|["']$/g, '');
+
+        fm[key] = val;
+      });
+
+      return { frontMatter: fm, body };
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      requestAnimationFrame(() => {
+        toast.classList.add('visible');
+      });
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
