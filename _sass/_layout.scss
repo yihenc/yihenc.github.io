@@ -6,22 +6,12 @@
   min-height: 100vh;
 }
 
-// Hero section with subtle wallpaper
+// Hero section — show bottom part of wallpaper (flower field), vivid colors
 .site-hero {
   position: relative;
   overflow: hidden;
-  background: center / cover no-repeat;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(26, 24, 22, 0.55) 0%,
-      rgba(26, 24, 22, 0.7) 100%
-    );
-  }
+  background: bottom / cover no-repeat;
+  height: 180px;
 }
 
 .site-hero-inner {
@@ -29,8 +19,11 @@
   z-index: 1;
   max-width: var(--content-wide);
   margin: 0 auto;
-  padding: 3rem 1.5rem 2.5rem;
+  padding: 2rem 1.5rem 1.5rem;
   color: #faf9f5;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
 }
 
 // Top navigation bar
@@ -50,26 +43,14 @@
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 52px;
+  justify-content: center;
+  gap: 2rem;
+  height: 48px;
 }
 
+// Nav brand hidden on homepage (hero already shows identity)
 .site-nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  text-decoration: none;
-  color: var(--heading-color);
-  font-weight: 600;
-  font-size: 0.9375rem;
-  letter-spacing: -0.01em;
-}
-
-.site-nav-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
+  display: none;
 }
 
 .site-nav-links {
