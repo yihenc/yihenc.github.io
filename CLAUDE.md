@@ -77,5 +77,5 @@ initial_prompt: "I want to work on my Jekyll blog at yihenc.github.io. It has an
 - **Admin login autocomplete**: Using `autocomplete="username"` + `autocomplete="current-password"` on the two fields lets browser password managers detect and save credentials properly, even though the semantic meaning differs from actual usage
 - **Chinese fiction content conventions**: `&emsp;&emsp;` for paragraph indentation is intentional typographic choice — never strip. `---` in body content = scene break horizontal rules, not front matter delimiters
 - **Large content files via shell**: For 500+ line content, use `cat` heredoc + `tail` in Bash to compose posts — avoids bloating agent context with full file writes
-- **Conditional nav elements via Jekyll**: Use `{% unless page.layout == 'home' %}` to show/hide elements per page type; add CSS class modifier (e.g. `.site-nav-with-brand`) for layout differences
+- **Conditional nav elements via Jekyll**: Use {% raw %}`{% unless page.layout == 'home' %}`{% endraw %} to show/hide elements per page type; add CSS class modifier (e.g. `.site-nav-with-brand`) for layout differences
 - **Image processing**: Pillow available via `pip install --break-system-packages Pillow`. No ImageMagick/ffmpeg on this server
