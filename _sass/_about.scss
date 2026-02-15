@@ -1,0 +1,93 @@
+// About page — clean minimal bio card
+
+.about-page {
+  font-family: var(--body-font);
+}
+
+.about-intro {
+  margin-bottom: var(--spacer-3);
+  padding-bottom: var(--spacer-2);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.about-tagline {
+  font-family: var(--text-font);
+  font-size: 1.25rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--heading-color);
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+
+.about-bio {
+  font-size: 0.9375rem;
+  color: var(--gray-600);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 560px;
+}
+
+// Sections
+.about-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-3);
+}
+
+.about-section-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-400);
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.about-item {
+  margin-bottom: 1.25rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.about-item-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.125rem;
+
+  strong {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--heading-color);
+  }
+}
+
+.about-item-meta {
+  font-size: 0.8125rem;
+  color: var(--gray-500);
+}
+
+.about-item-detail {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--gray-600);
+  margin: 0.125rem 0 0;
+  line-height: 1.5;
+}
+
+// Responsive
+@media (max-width: $sm-width) {
+  .about-tagline {
+    font-size: 1.125rem;
+  }
+
+  .about-item-header {
+    flex-direction: column;
+    gap: 0;
+  }
+}
