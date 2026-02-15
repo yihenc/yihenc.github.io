@@ -1608,14 +1608,15 @@ permalink: /admin/
 
     async function executeDelete() {
       if (!deleteTarget) return;
+      const target = deleteTarget;
       closeDialog();
 
       try {
-        const data = await githubAPI(`/contents/${deleteTarget.path}?ref=${BRANCH}`);
-        await githubAPI(`/contents/${deleteTarget.path}`, {
+        const data = await githubAPI(`/contents/${target.path}?ref=${BRANCH}`);
+        await githubAPI(`/contents/${target.path}`, {
           method: 'DELETE',
           body: JSON.stringify({
-            message: `Delete: ${deleteTarget.name}`,
+            message: `Delete: ${target.name}`,
             sha: data.sha,
             branch: BRANCH,
           })
