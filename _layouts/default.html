@@ -12,8 +12,9 @@
       {%- endif -%}
 
       <!-- Hero with subtle wallpaper -->
-      {% if page.layout == 'home' %}
-      <div class="site-hero" {% if cover_image %}style="background-image: url({{ cover_image | relative_url }})"{% endif %}>
+      {% if page.layout == 'home' or page.layout == 'page' %}
+      <div class="site-hero{% if page.layout == 'page' %} site-hero-compact{% endif %}" {% if cover_image %}style="background-image: url({{ cover_image | relative_url }})"{% endif %}>
+        {% if page.layout == 'home' %}
         <div class="site-hero-inner">
           <div class="hero-identity">
             {% if site.avatar -%}
@@ -30,13 +31,14 @@
             </div>
           </div>
         </div>
+        {% endif %}
       </div>
       {% endif %}
 
       <!-- Navigation -->
-      <nav class="site-nav{% unless page.layout == 'home' %} site-nav-with-brand{% endunless %}">
+      <nav class="site-nav{% unless page.layout == 'home' or page.layout == 'page' %} site-nav-with-brand{% endunless %}">
         <div class="site-nav-inner">
-          {% unless page.layout == 'home' %}
+          {% unless page.layout == 'home' or page.layout == 'page' %}
           <a href="{{ '/' | relative_url }}" class="site-nav-brand">{{ site.title }}</a>
           {% endunless %}
           {%- if site.data.navigation -%}

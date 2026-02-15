@@ -44,8 +44,10 @@ layout: default
   </aside>
   {% endif %}
 
-  <div class="post-body" id="post-body">
-    {{ content }}
+  <div class="post-body-wrapper" id="post-body-wrapper">
+    <div class="post-body" id="post-body">
+      {{ content }}
+    </div>
   </div>
 
   <!-- Reading mode toggle -->
@@ -111,7 +113,7 @@ layout: default
   var tocLinks = sidebar.querySelectorAll('.toc-nav a');
   tocLinks.forEach(function(link) {
     link.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 1280) {
         sidebar.classList.remove('toc-sidebar-open');
       }
     });
@@ -121,12 +123,13 @@ layout: default
 // Reading mode toggle
 (function() {
   var btn = document.getElementById('reading-mode-toggle');
+  var wrapper = document.getElementById('post-body-wrapper');
   var body = document.getElementById('post-body');
   var paginator = document.getElementById('reading-paginator');
   var prevBtn = document.getElementById('reading-prev');
   var nextBtn = document.getElementById('reading-next');
   var pageInfo = document.getElementById('reading-page-info');
-  if (!btn || !body) return;
+  if (!btn || !wrapper || !body) return;
 
   var isPaginated = false;
   var currentPage = 0;
@@ -137,18 +140,21 @@ layout: default
   function enablePaginated() {
     isPaginated = true;
     btn.classList.add('active');
-    body.classList.add('paginated-mode');
+    wrapper.classList.add('paginated-mode');
 
-    // Calculate page height based on line height
+    // Calculate page height based on line height of the body content
     var style = window.getComputedStyle(body);
-    var lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.75;
-    pageHeight = lineHeight * LINES_PER_PAGE;
+    var lineHeight = parseFloat(style.lineHeight);
+    if (isNaN(lineHeight)) lineHeight = parseFloat(style.fontSize) * 1.75;
+    pageHeight = Math.floor(lineHeight * LINES_PER_PAGE);
 
-    body.style.maxHeight = pageHeight + 'px';
-    body.style.overflow = 'hidden';
+    // Set the wrapper as the scroll container with fixed height
+    wrapper.style.height = pageHeight + 'px';
+    wrapper.style.overflow = 'hidden';
 
-    totalPages = Math.ceil(body.scrollHeight / pageHeight);
+    totalPages = Math.max(1, Math.ceil(body.scrollHeight / pageHeight));
     currentPage = 0;
+    wrapper.scrollTop = 0;
     updatePaginator();
     paginator.style.display = 'flex';
   }
@@ -156,9 +162,10 @@ layout: default
   function disablePaginated() {
     isPaginated = false;
     btn.classList.remove('active');
-    body.classList.remove('paginated-mode');
-    body.style.maxHeight = '';
-    body.style.overflow = '';
+    wrapper.classList.remove('paginated-mode');
+    wrapper.style.height = '';
+    wrapper.style.overflow = '';
+    wrapper.scrollTop = 0;
     paginator.style.display = 'none';
     currentPage = 0;
   }
@@ -171,14 +178,13 @@ layout: default
 
   function goToPage(page) {
     currentPage = Math.max(0, Math.min(page, totalPages - 1));
-    body.style.transform = 'translateY(-' + (currentPage * pageHeight) + 'px)';
+    wrapper.scrollTop = currentPage * pageHeight;
     updatePaginator();
   }
 
   btn.addEventListener('click', function() {
     if (isPaginated) {
       disablePaginated();
-      body.style.transform = '';
     } else {
       enablePaginated();
     }

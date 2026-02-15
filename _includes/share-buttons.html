@@ -1,28 +1,23 @@
 <div class="share-section">
   <span class="share-label">Share</span>
   <div class="share-buttons">
-    <button class="share-btn share-wechat" id="share-wechat" title="Share to WeChat">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05a6.093 6.093 0 0 1-.247-1.704c0-3.526 3.39-6.4 7.585-6.4.276 0 .543.027.811.05C16.918 4.576 13.147 2.188 8.691 2.188zm-2.6 4.408c-.58 0-1.05-.47-1.05-1.05s.47-1.05 1.05-1.05 1.05.47 1.05 1.05-.47 1.05-1.05 1.05zm5.2 0c-.58 0-1.05-.47-1.05-1.05s.47-1.05 1.05-1.05 1.05.47 1.05 1.05-.47 1.05-1.05 1.05zM23.76 15.7c0-3.338-3.39-6.05-7.585-6.05-4.194 0-7.584 2.712-7.584 6.05 0 3.339 3.39 6.05 7.584 6.05.89 0 1.752-.127 2.55-.363a.733.733 0 0 1 .607.083l1.614.946a.276.276 0 0 0 .142.046c.136 0 .246-.113.246-.25 0-.06-.024-.12-.04-.18l-.33-1.255a.5.5 0 0 1 .18-.563c1.553-1.143 2.616-2.833 2.616-4.514zm-10.064-.91c-.492 0-.891-.4-.891-.891s.4-.89.891-.89.891.399.891.89-.4.891-.891.891zm4.958 0c-.492 0-.891-.4-.891-.891s.4-.89.891-.89.891.399.891.89-.4.891-.891.891z"/>
-      </svg>
-    </button>
-    <a class="share-btn share-zhihu" href="https://www.zhihu.com/question/waiting" onclick="window.open('https://zhuanlan.zhihu.com/write?title={{ page.title | url_encode }}&url={{ page.url | absolute_url | url_encode }}', '_blank', 'width=600,height=500'); return false;" title="Share to Zhihu">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5.721 0C2.251 0 0 2.25 0 5.719V18.28C0 21.751 2.25 24 5.719 24H18.28c3.47 0 5.719-2.25 5.719-5.719V5.719C24 2.251 21.75 0 18.281 0H5.721zm1.964 4.078h6.748s.082-.352-.133-.61c0 0-2.037 0-3.324-.024-.09-.576-.174-1.21-.238-1.674h3.213s.09-.39-.18-.595H8.334s.047.408.378.558c.33.15 1.946.196 1.946.196l.27 1.535H7.685c-.272 0-.573.535-.573.535l3.056.001s-.904 4.55-2.396 6.535c0 0-.723.897-1.087.162 0 0-.358-.723-.442-2.31 0 0-.048-.576-.354-.272 0 0-.845 1.204-.845 2.67 0 0-.048.762.507 1.486 0 0 .676.698 1.581-.224 0 0 1.722-1.76 2.646-5.09l.133 3.868s-.047.7-.186.91c0 0-.167.39-.725.117 0 0-.413-.14-.546.272 0 0-.108.443.592.852 0 0 .666.37 1.266-.06 0 0 .771-.486.856-2.145 0 0 .133-3.868.08-5.138h2.775s.048-.424-.176-.615zm3.516 5.89s-.18-.354-.578-.06l-.56.466s1.38 2.073 1.502 2.47c0 0-.37 1.12-2.447 2.504 0 0-.405.217-.055.504 0 0 .266.2.828-.03 0 0 2.253-1.164 2.87-2.847 0 0 .65.953 1.865 1.993 0 0 .502.397.75.122.247-.274-.062-.673-.297-.858 0 0-1.862-1.3-2.397-2.443l-.224-.402-.105-.174-1.152-1.745z"/>
-      </svg>
-    </a>
-    <a class="share-btn share-bilibili" href="https://www.bilibili.com" onclick="window.open('https://www.bilibili.com', '_blank'); return false;" title="Share to Bilibili">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906L17.813 4.653zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773H5.333zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/>
-      </svg>
-    </a>
     <button class="share-btn share-copy" id="share-copy" title="Copy link">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
       </svg>
       <span class="share-copy-toast" id="share-copy-toast">Copied!</span>
     </button>
+    <button class="share-btn share-wechat" id="share-wechat" title="WeChat">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05a6.093 6.093 0 0 1-.247-1.704c0-3.526 3.39-6.4 7.585-6.4.276 0 .543.027.811.05C16.918 4.576 13.147 2.188 8.691 2.188zm-2.6 4.408c-.58 0-1.05-.47-1.05-1.05s.47-1.05 1.05-1.05 1.05.47 1.05 1.05-.47 1.05-1.05 1.05zm5.2 0c-.58 0-1.05-.47-1.05-1.05s.47-1.05 1.05-1.05 1.05.47 1.05 1.05-.47 1.05-1.05 1.05zM23.76 15.7c0-3.338-3.39-6.05-7.585-6.05-4.194 0-7.584 2.712-7.584 6.05 0 3.339 3.39 6.05 7.584 6.05.89 0 1.752-.127 2.55-.363a.733.733 0 0 1 .607.083l1.614.946a.276.276 0 0 0 .142.046c.136 0 .246-.113.246-.25 0-.06-.024-.12-.04-.18l-.33-1.255a.5.5 0 0 1 .18-.563c1.553-1.143 2.616-2.833 2.616-4.514zm-10.064-.91c-.492 0-.891-.4-.891-.891s.4-.89.891-.89.891.399.891.89-.4.891-.891.891zm4.958 0c-.492 0-.891-.4-.891-.891s.4-.89.891-.89.891.399.891.89-.4.891-.891.891z"/>
+      </svg>
+    </button>
+    <a class="share-btn share-twitter" href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url | url_encode }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener" title="X (Twitter)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </a>
   </div>
 </div>
 
@@ -30,7 +25,7 @@
 <div class="wechat-modal" id="wechat-modal">
   <div class="wechat-modal-backdrop" id="wechat-modal-backdrop"></div>
   <div class="wechat-modal-content">
-    <p>Copy the link below and share in WeChat:</p>
+    <p>Copy the link and share in WeChat:</p>
     <input type="text" class="wechat-link-input" id="wechat-link-input" readonly>
     <button class="wechat-copy-btn" id="wechat-copy-btn">Copy Link</button>
     <button class="wechat-close-btn" id="wechat-close-btn">&times;</button>
@@ -40,6 +35,18 @@
 <script>
 (function() {
   var pageUrl = window.location.href;
+
+  // Copy link
+  var copyBtn = document.getElementById('share-copy');
+  var copyToast = document.getElementById('share-copy-toast');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      navigator.clipboard.writeText(pageUrl).then(function() {
+        copyToast.classList.add('active');
+        setTimeout(function() { copyToast.classList.remove('active'); }, 2000);
+      });
+    });
+  }
 
   // WeChat share
   var wechatBtn = document.getElementById('share-wechat');
@@ -63,18 +70,6 @@
       navigator.clipboard.writeText(pageUrl).then(function() {
         wechatCopy.textContent = 'Copied!';
         setTimeout(function() { wechatCopy.textContent = 'Copy Link'; }, 2000);
-      });
-    });
-  }
-
-  // Copy link
-  var copyBtn = document.getElementById('share-copy');
-  var copyToast = document.getElementById('share-copy-toast');
-  if (copyBtn) {
-    copyBtn.addEventListener('click', function() {
-      navigator.clipboard.writeText(pageUrl).then(function() {
-        copyToast.classList.add('active');
-        setTimeout(function() { copyToast.classList.remove('active'); }, 2000);
       });
     });
   }

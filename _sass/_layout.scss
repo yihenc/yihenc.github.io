@@ -14,6 +14,11 @@
   height: 180px;
 }
 
+// Compact hero for non-home pages (About, etc.) — shorter band, no identity
+.site-hero-compact {
+  height: 100px;
+}
+
 .site-hero-inner {
   position: relative;
   z-index: 1;
@@ -162,6 +167,10 @@
     padding: 2.5rem 1.25rem 2rem;
   }
 
+  .site-hero-compact {
+    height: 80px;
+  }
+
   .site-content {
     padding: 2rem 1.25rem;
   }
@@ -178,6 +187,10 @@
 @media (max-width: $sm-width) {
   .site-hero-inner {
     padding: 2rem 1rem 1.5rem;
+  }
+
+  .site-hero-compact {
+    height: 60px;
   }
 
   .site-content {
