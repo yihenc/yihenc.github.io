@@ -1,32 +1,32 @@
-// Pagination — minimal, clean buttons
+// Pagination — subtle, bottom-anchored
 
 .pagination {
   display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin: var(--spacer-3) 0;
-  color: var(--gray-500);
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: var(--spacer-3);
+  color: var(--gray-400);
 }
 
 .pagination-item {
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 1.25rem;
+  padding: 0.375rem 0.75rem;
   text-decoration: none;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--gray-500);
-  transition: all 0.15s ease;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--gray-400);
+  letter-spacing: 0.02em;
+  transition: color 0.15s ease;
+  border: none;
+  background: none;
 }
 
 a.pagination-item {
-  color: var(--heading-color);
+  color: var(--gray-500);
 
   &:hover {
-    background-color: var(--accent-light);
-    border-color: var(--accent-border);
     color: var(--accent);
   }
 }

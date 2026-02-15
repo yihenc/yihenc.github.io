@@ -14,9 +14,9 @@
       <li>
         {% assign slugified_tag = tag | slugify %}
         {%- if tags_archive_page -%}
-          <a class="post-tag" href="{{ tags_archive_page | relative_url }}#{{ slugified_tag }}">{{ slugified_tag }}</a>
+          <a class="post-tag" href="{{ tags_archive_page | relative_url }}#{{ slugified_tag }}">{{ tag }}</a>
         {%- else -%}
-          <span class="post-tag">{{ slugified_tag }}</span>
+          <span class="post-tag">{{ tag }}</span>
         {%- endif -%}
       </li>
     {%- endfor -%}

@@ -1,19 +1,62 @@
-// Table of Contents — clean, minimal
+// Table of Contents — left sidebar, pinned
 
-.toc-wrapper {
-  margin-bottom: var(--spacer-2);
-  padding: 1.25rem 1.5rem;
+// Post layout adjustments for TOC
+.post-with-toc {
+  position: relative;
+}
+
+// TOC sidebar
+.toc-sidebar {
+  position: fixed;
+  top: 80px;
+  width: 220px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  z-index: 50;
+
+  // Position to the left of content area
+  // Calculate: (100vw - content-wide) / 2 - sidebar-width - gap
+  left: max(1rem, calc((100vw - var(--content-wide)) / 2 - 240px));
+}
+
+// Toggle button (mobile only, hidden on desktop)
+.toc-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.375rem;
+  background: var(--body-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  background: var(--code-bg);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--body-font);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: var(--accent);
+    border-color: var(--accent-border);
+  }
+}
+
+.toc-toggle-label {
+  font-size: 0.75rem;
+}
+
+// TOC content
+.toc-content {
+  padding: 0;
 }
 
 .toc-title {
-  font-size: 0.75rem;
+  font-family: var(--body-font);
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--gray-500);
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
   margin: 0 0 0.75rem;
   padding: 0;
   background: none;
@@ -22,8 +65,9 @@
 }
 
 .toc-nav {
+  font-family: var(--body-font);
   font-size: 0.8125rem;
-  max-height: 50vh;
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
   border: none;
   border-radius: 0;
@@ -36,9 +80,11 @@
 
   a {
     display: block;
-    padding: 0.3rem 0;
+    padding: 0.25rem 0;
     text-decoration: none;
-    color: var(--gray-600);
+    color: var(--gray-500);
+    font-size: 0.8125rem;
+    line-height: 1.45;
     transition: color 0.15s ease;
 
     &:hover {
@@ -60,7 +106,62 @@
   // Nested items
   li ul li a {
     font-weight: 400;
-    padding-left: 1rem;
-    font-size: 0.8125rem;
+    padding-left: 0.875rem;
+    font-size: 0.75rem;
+    color: var(--gray-400);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+// Hide TOC sidebar on screens too narrow to show it beside content
+@media (max-width: $xl-width) {
+  .toc-sidebar {
+    position: fixed;
+    top: auto;
+    bottom: 1rem;
+    left: 1rem;
+    width: auto;
+    max-height: none;
+    overflow: visible;
+    z-index: 200;
+  }
+
+  .toc-toggle {
+    display: flex;
+  }
+
+  .toc-content {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 0.5rem;
+    width: 240px;
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--body-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem 1.25rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .toc-sidebar-open .toc-content {
+    display: block;
+  }
+}
+
+@media (max-width: $sm-width) {
+  .toc-sidebar {
+    bottom: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .toc-content {
+    width: calc(100vw - 1.5rem);
+    max-height: 50vh;
   }
 }

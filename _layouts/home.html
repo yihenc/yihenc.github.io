@@ -24,14 +24,14 @@ layout: default
 </div>
 
 <div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ paginator.next_page_path | relative_url }}">&larr; Older</a>
-  {% else %}
-    <span class="pagination-item older">&larr; Older</span>
-  {% endif %}
   {% if paginator.previous_page %}
-    <a class="pagination-item newer" href="{{ paginator.previous_page_path | prepend: relative_url }}">Newer &rarr;</a>
+    <a class="pagination-item newer" href="{{ paginator.previous_page_path | relative_url }}">&larr; Newer</a>
   {% else %}
-    <span class="pagination-item newer">Newer &rarr;</span>
+    <span class="pagination-item newer">&larr; Newer</span>
+  {% endif %}
+  {% if paginator.next_page %}
+    <a class="pagination-item older" href="{{ paginator.next_page_path | relative_url }}">Older &rarr;</a>
+  {% else %}
+    <span class="pagination-item older">Older &rarr;</span>
   {% endif %}
 </div>
