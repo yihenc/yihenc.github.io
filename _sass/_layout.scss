@@ -28,13 +28,10 @@
 
 // Top navigation bar
 .site-nav {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 100;
   background: var(--body-bg);
   border-bottom: 1px solid var(--border-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .site-nav-inner {
@@ -51,6 +48,27 @@
 // Nav brand hidden on homepage (hero already shows identity)
 .site-nav-brand {
   display: none;
+  font-family: var(--body-font);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+// Show brand on non-homepage pages (post, about, etc.)
+.site-nav-with-brand .site-nav-brand {
+  display: block;
+}
+
+.site-nav-with-brand .site-nav-inner {
+  justify-content: flex-start;
 }
 
 .site-nav-links {
@@ -96,6 +114,11 @@
       color: var(--accent);
     }
   }
+}
+
+// On non-homepage, push social icons to the right
+.site-nav-with-brand .site-nav-social {
+  margin-left: auto;
 }
 
 // Main content area

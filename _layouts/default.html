@@ -34,8 +34,11 @@
       {% endif %}
 
       <!-- Navigation -->
-      <nav class="site-nav">
+      <nav class="site-nav{% unless page.layout == 'home' %} site-nav-with-brand{% endunless %}">
         <div class="site-nav-inner">
+          {% unless page.layout == 'home' %}
+          <a href="{{ '/' | relative_url }}" class="site-nav-brand">{{ site.title }}</a>
+          {% endunless %}
           {%- if site.data.navigation -%}
           <ul class="site-nav-links">
             {%- for nav in site.data.navigation -%}
