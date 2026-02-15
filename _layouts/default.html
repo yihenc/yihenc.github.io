@@ -13,8 +13,7 @@
 
       <!-- Hero with subtle wallpaper -->
       {% if page.layout == 'home' or page.layout == 'page' %}
-      <div class="site-hero{% if page.layout == 'page' %} site-hero-compact{% endif %}" {% if cover_image %}style="background-image: url({{ cover_image | relative_url }})"{% endif %}>
-        {% if page.layout == 'home' %}
+      <div class="site-hero" {% if cover_image %}style="background-image: url({{ cover_image | relative_url }})"{% endif %}>
         <div class="site-hero-inner">
           <div class="hero-identity">
             {% if site.avatar -%}
@@ -31,7 +30,6 @@
             </div>
           </div>
         </div>
-        {% endif %}
       </div>
       {% endif %}
 

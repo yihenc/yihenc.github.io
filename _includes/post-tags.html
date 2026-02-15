@@ -8,17 +8,6 @@
 {%- endif -%}
 
 <div class="post-tags-section">
-  <i class="post-tags-icon fas fa-tags"></i>
-  <ul class="post-tags">
-    {%- for tag in page.tags -%}
-      <li>
-        {% assign slugified_tag = tag | slugify %}
-        {%- if tags_archive_page -%}
-          <a class="post-tag" href="{{ tags_archive_page | relative_url }}#{{ slugified_tag }}">{{ tag }}</a>
-        {%- else -%}
-          <span class="post-tag">{{ tag }}</span>
-        {%- endif -%}
-      </li>
-    {%- endfor -%}
-  </ul>
+  <svg class="post-tags-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+  <div class="post-tags">{%- for tag in page.tags -%}{% assign slugified_tag = tag | slugify %}{%- if tags_archive_page -%}<a class="post-tag" href="{{ tags_archive_page | relative_url }}#{{ slugified_tag }}">{{ tag }}</a>{%- else -%}<span class="post-tag">{{ tag }}</span>{%- endif -%}{%- endfor -%}</div>
 </div>

@@ -14,8 +14,29 @@
   overflow-y: auto;
   z-index: 50;
 
+  // Thin scrollbar, hidden when not hovering
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &:hover {
+    scrollbar-color: var(--gray-300) transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+  }
+
   // Position to the left of content area
-  // Calculate: (100vw - content-wide) / 2 - sidebar-width - gap
   left: max(1rem, calc((100vw - var(--content-wide)) / 2 - 240px));
 }
 
@@ -71,6 +92,28 @@
   overflow-y: auto;
   border: none;
   border-radius: 0;
+
+  // Thin scrollbar, hidden when not hovering
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+
+  &:hover {
+    scrollbar-color: var(--gray-300) transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+  }
 
   ul {
     margin: 0;

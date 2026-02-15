@@ -80,20 +80,6 @@
   margin-bottom: 0;
 }
 
-// Post body wrapper (for paginated mode)
-.post-body-wrapper {
-  // Default: no constraints
-}
-
-.post-body-wrapper.paginated-mode {
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: var(--spacer);
-}
-
-.post-body {
-  // Content inside wrapper
-}
-
 // Related posts
 .related {
   padding-top: var(--spacer-2);
@@ -143,7 +129,7 @@
   }
 }
 
-// Tags — horizontally aligned
+// Tags
 .post-tags-section {
   display: flex;
   align-items: center;
@@ -157,20 +143,15 @@
 .post-tags-icon {
   flex-shrink: 0;
   color: var(--gray-400);
-  font-size: 0.8125rem;
+  width: 14px;
+  height: 14px;
 }
 
 .post-tags {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.375rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-
-  li {
-    display: flex;
-  }
 }
 
 .post-tag {
@@ -184,6 +165,7 @@
   border-radius: 100px;
   text-decoration: none;
   white-space: nowrap;
+  vertical-align: middle;
   transition: all 0.15s ease;
 
   &:hover,
@@ -202,88 +184,6 @@
   &:focus {
     color: inherit;
   }
-}
-
-// Reading mode toggle — right side of content
-.reading-mode-toggle {
-  position: fixed;
-  z-index: 200;
-  right: max(1rem, calc((100vw - var(--content-wide)) / 2 - 60px));
-  top: 80px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--body-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  color: var(--gray-400);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  padding: 0;
-
-  &:hover {
-    color: var(--accent);
-    border-color: var(--accent-border);
-  }
-
-  &.active {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: var(--accent-light);
-  }
-
-  .icon-page {
-    display: none;
-  }
-
-  &.active .icon-scroll {
-    display: none;
-  }
-
-  &.active .icon-page {
-    display: block;
-  }
-}
-
-// Reading paginator
-.reading-paginator {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 0.75rem 0;
-  margin-bottom: var(--spacer);
-  font-family: var(--body-font);
-}
-
-.reading-page-btn {
-  padding: 0.375rem 0.75rem;
-  background: none;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 0.75rem;
-  font-family: var(--body-font);
-  color: var(--gray-500);
-  cursor: pointer;
-  transition: all 0.15s ease;
-
-  &:hover:not(:disabled) {
-    color: var(--accent);
-    border-color: var(--accent-border);
-  }
-
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-}
-
-.reading-page-info {
-  font-size: 0.75rem;
-  color: var(--gray-400);
-  font-variant-numeric: tabular-nums;
 }
 
 // Share section
@@ -452,22 +352,7 @@
   }
 }
 
-// Responsive: hide reading mode toggle on narrow screens, make it bottom-right
-@media (max-width: $xl-width) {
-  .reading-mode-toggle {
-    position: fixed;
-    top: auto;
-    bottom: 1rem;
-    right: 1rem;
-  }
-}
-
 @media (max-width: $sm-width) {
-  .reading-mode-toggle {
-    bottom: 0.75rem;
-    right: 0.75rem;
-  }
-
   .share-section {
     flex-wrap: wrap;
   }
