@@ -640,6 +640,38 @@ permalink: /admin/
       flex-shrink: 0;
     }
 
+    .btn-preview-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.4375rem 0.75rem;
+      background: none;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-preview-toggle:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .btn-preview-toggle.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-color: var(--accent-border);
+    }
+
+    .btn-preview-toggle svg {
+      width: 14px;
+      height: 14px;
+    }
+
     .btn-save {
       display: inline-flex;
       align-items: center;
@@ -670,11 +702,157 @@ permalink: /admin/
       height: 14px;
     }
 
-    /* Editor form fields */
+    /* Editor split layout */
+    .editor-split {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
     .editor-body {
       flex: 1;
       overflow-y: auto;
       padding: 1.5rem;
+      min-width: 0;
+    }
+
+    /* Preview pane */
+    .preview-pane {
+      flex: 0 0 50%;
+      max-width: 50%;
+      overflow-y: auto;
+      border-left: 1px solid var(--border);
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      transition: flex 0.25s ease, max-width 0.25s ease, opacity 0.2s ease;
+    }
+
+    .preview-pane.collapsed {
+      flex: 0 0 0%;
+      max-width: 0%;
+      opacity: 0;
+      border-left: none;
+      overflow: hidden;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.625rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      flex-shrink: 0;
+    }
+
+    .preview-header-title {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .preview-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .preview-content-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--text-primary);
+    }
+
+    .preview-content-inner .preview-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.875rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin: 0 0 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .preview-content-inner .preview-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      color: var(--text-tertiary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8125rem;
+    }
+
+    .preview-content-inner .preview-tag {
+      display: inline-block;
+      padding: 0.125rem 0.625rem;
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      border-radius: 100px;
+    }
+
+    .preview-content-inner h1 { font-family: 'DM Sans', sans-serif; font-size: 1.5em; margin-top: 2rem; }
+    .preview-content-inner h2 { font-family: 'DM Sans', sans-serif; font-size: 1.3em; margin-top: 2rem; border-bottom: none; }
+    .preview-content-inner h3 { font-family: 'DM Sans', sans-serif; font-size: 1.1em; margin-top: 1.5rem; }
+    .preview-content-inner p { margin-bottom: 1rem; }
+    .preview-content-inner hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .preview-content-inner blockquote {
+      padding: 0.75rem 1.25rem;
+      margin: 1.5rem 0;
+      color: var(--text-secondary);
+      border-left: 3px solid var(--accent);
+      background: var(--accent-light);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic;
+    }
+    .preview-content-inner pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      background: var(--bg-secondary);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    .preview-content-inner code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875em;
+      background: var(--bg-secondary);
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+    }
+    .preview-content-inner pre code {
+      background: none;
+      padding: 0;
+    }
+    .preview-content-inner img {
+      max-width: 100%;
+      border-radius: var(--radius-sm);
+    }
+    .preview-content-inner a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent-border);
+      text-underline-offset: 2px;
+    }
+
+    .preview-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-tertiary);
+      font-size: 0.875rem;
+      font-style: italic;
     }
 
     .editor-inner {
@@ -1025,6 +1203,17 @@ permalink: /admin/
     }
 
     /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .preview-pane {
+        flex: 0 0 45%;
+        max-width: 45%;
+      }
+      .preview-pane.collapsed {
+        flex: 0 0 0%;
+        max-width: 0%;
+      }
+    }
+
     @media (max-width: 640px) {
       .list-view {
         padding: 1.25rem 1rem;
@@ -1056,6 +1245,27 @@ permalink: /admin/
 
       .editor-body {
         padding: 1rem;
+      }
+
+      /* Mobile: preview is full-width overlay when open */
+      .editor-split {
+        position: relative;
+      }
+
+      .preview-pane {
+        position: absolute;
+        inset: 0;
+        flex: none;
+        max-width: 100%;
+        width: 100%;
+        z-index: 50;
+        border-left: none;
+        background: var(--bg-primary);
+      }
+
+      .preview-pane.collapsed {
+        display: none;
+        max-width: 100%;
       }
 
       .header {
@@ -1128,12 +1338,12 @@ permalink: /admin/
       <div class="login-card">
         <form id="login-form">
           <div class="login-field">
-            <label for="admin-password">Password</label>
-            <input type="password" id="admin-password" placeholder="Enter admin password" autocomplete="current-password" required>
+            <label for="admin-password">Username</label>
+            <input type="text" id="admin-password" placeholder="Enter username" autocomplete="username" required>
           </div>
           <div class="login-field">
-            <label for="github-token">GitHub Token</label>
-            <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" required>
+            <label for="github-token">Password</label>
+            <input type="password" id="github-token" placeholder="Enter password" autocomplete="current-password" required>
             <div class="login-hint">Fine-grained PAT with Contents read/write on this repo</div>
           </div>
           <button type="submit" class="login-btn">Sign in</button>
@@ -1191,43 +1401,59 @@ permalink: /admin/
             <span id="editor-status" class="editor-status"></span>
           </div>
           <div class="editor-toolbar-right">
+            <button class="btn-preview-toggle active" onclick="togglePreview()" id="btn-preview-toggle" title="Toggle preview">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+              Preview
+            </button>
             <button class="btn-save" onclick="savePost()" id="btn-save">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               Publish
             </button>
           </div>
         </div>
-        <div class="editor-body">
-          <div class="editor-inner">
-            <div class="field">
-              <label for="post-title">Title</label>
-              <input type="text" id="post-title" placeholder="Enter post title...">
-            </div>
-            <div class="field-row">
+        <div class="editor-split">
+          <div class="editor-body">
+            <div class="editor-inner">
               <div class="field">
-                <label for="post-date">Date</label>
-                <input type="date" id="post-date">
+                <label for="post-title">Title</label>
+                <input type="text" id="post-title" placeholder="Enter post title..." oninput="updatePreview()">
               </div>
-              <div class="field">
-                <label>Tags</label>
-                <div class="tag-input-wrap" id="tag-container" onclick="document.getElementById('tag-input').focus()">
-                  <input type="text" id="tag-input" class="tag-input" placeholder="Type and press Enter...">
+              <div class="field-row">
+                <div class="field">
+                  <label for="post-date">Date</label>
+                  <input type="date" id="post-date" onchange="updatePreview()">
+                </div>
+                <div class="field">
+                  <label>Tags</label>
+                  <div class="tag-input-wrap" id="tag-container" onclick="document.getElementById('tag-input').focus()">
+                    <input type="text" id="tag-input" class="tag-input" placeholder="Type and press Enter...">
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="field-row">
-              <div class="field-checkbox">
-                <input type="checkbox" id="post-toc">
-                <label for="post-toc">Table of Contents</label>
+              <div class="field-row">
+                <div class="field-checkbox">
+                  <input type="checkbox" id="post-toc">
+                  <label for="post-toc">Table of Contents</label>
+                </div>
+                <div class="field-checkbox">
+                  <input type="checkbox" id="post-math">
+                  <label for="post-math">MathJax Support</label>
+                </div>
               </div>
-              <div class="field-checkbox">
-                <input type="checkbox" id="post-math">
-                <label for="post-math">MathJax Support</label>
+              <div class="field">
+                <label>Content</label>
+                <textarea id="md-editor"></textarea>
               </div>
             </div>
-            <div class="field">
-              <label>Content</label>
-              <textarea id="md-editor"></textarea>
+          </div>
+          <div class="preview-pane" id="preview-pane">
+            <div class="preview-header">
+              <span class="preview-header-title">Preview</span>
+            </div>
+            <div class="preview-content">
+              <div class="preview-content-inner" id="preview-content">
+                <div class="preview-empty">Start writing to see preview...</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1417,6 +1643,8 @@ permalink: /admin/
     }
 
     // ===== EDITOR =====
+    let previewDebounceTimer = null;
+
     function initEditor() {
       if (easyMDE) {
         easyMDE.toTextArea();
@@ -1431,7 +1659,6 @@ permalink: /admin/
           'bold', 'italic', 'heading', '|',
           'quote', 'unordered-list', 'ordered-list', '|',
           'link', 'image', 'code', 'table', '|',
-          'preview', 'side-by-side', '|',
           'guide'
         ],
         previewRender: function(text) {
@@ -1439,6 +1666,72 @@ permalink: /admin/
         },
         status: false,
       });
+
+      // Live preview update on content change (debounced)
+      easyMDE.codemirror.on('change', () => {
+        clearTimeout(previewDebounceTimer);
+        previewDebounceTimer = setTimeout(updatePreview, 200);
+      });
+
+      // Init preview pane state: open on desktop, collapsed on mobile
+      const previewPane = document.getElementById('preview-pane');
+      const toggleBtn = document.getElementById('btn-preview-toggle');
+      if (window.innerWidth <= 640) {
+        previewPane.classList.add('collapsed');
+        toggleBtn.classList.remove('active');
+      } else {
+        previewPane.classList.remove('collapsed');
+        toggleBtn.classList.add('active');
+      }
+    }
+
+    function togglePreview() {
+      const pane = document.getElementById('preview-pane');
+      const btn = document.getElementById('btn-preview-toggle');
+      pane.classList.toggle('collapsed');
+      btn.classList.toggle('active');
+      if (!pane.classList.contains('collapsed')) {
+        updatePreview();
+      }
+    }
+
+    function updatePreview() {
+      const pane = document.getElementById('preview-pane');
+      if (pane.classList.contains('collapsed')) return;
+
+      const title = document.getElementById('post-title').value.trim();
+      const date = document.getElementById('post-date').value;
+      const body = easyMDE ? easyMDE.value().trim() : '';
+      const container = document.getElementById('preview-content');
+
+      if (!title && !body) {
+        container.innerHTML = '<div class="preview-empty">Start writing to see preview...</div>';
+        return;
+      }
+
+      // Format date
+      let dateStr = '';
+      if (date) {
+        const d = new Date(date + 'T00:00:00');
+        dateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
+      // Tags
+      let tagsHtml = '';
+      if (currentTags.length) {
+        tagsHtml = currentTags.map(t => `<span class="preview-tag">${escapeHtml(t)}</span>`).join(' ');
+      }
+
+      // Render markdown
+      let bodyHtml = '';
+      if (body) {
+        bodyHtml = marked.parse(body);
+      }
+
+      container.innerHTML =
+        (title ? `<h1 class="preview-title">${escapeHtml(title)}</h1>` : '') +
+        ((dateStr || tagsHtml) ? `<div class="preview-meta">${dateStr ? `<span>${dateStr}</span>` : ''}${tagsHtml}</div>` : '') +
+        bodyHtml;
     }
 
     function openEditor(post = null) {
@@ -1487,6 +1780,7 @@ permalink: /admin/
 
         easyMDE.value(parsed.body);
         document.getElementById('editor-status').textContent = `Editing: ${post.name}`;
+        updatePreview();
       } catch (err) {
         showToast('Failed to load post: ' + err.message, 'error');
         closeEditor();
@@ -1501,6 +1795,8 @@ permalink: /admin/
         easyMDE = null;
       }
       editingPost = null;
+      // Reset preview
+      document.getElementById('preview-content').innerHTML = '<div class="preview-empty">Start writing to see preview...</div>';
     }
 
     async function editPost(index) {
@@ -1663,6 +1959,8 @@ permalink: /admin/
         pill.innerHTML = `${escapeHtml(tag)}<button type="button" onclick="removeTag(${i})">&times;</button>`;
         container.insertBefore(pill, input);
       });
+      // Update live preview
+      updatePreview();
     }
 
     // ===== UTILITIES =====
