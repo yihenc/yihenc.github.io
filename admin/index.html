@@ -9,6 +9,7 @@ permalink: /admin/
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — {{ site.title }}</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
   <!-- Fonts: Söhne-like clean sans-serif + refined serif -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -702,6 +703,77 @@ permalink: /admin/
       height: 14px;
     }
 
+    .btn-draft {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.4375rem 1rem;
+      background: none;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-draft:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .btn-draft:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-draft svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .draft-badge {
+      display: inline-block;
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #b07d24;
+      background: rgba(218, 165, 32, 0.12);
+      border: 1px solid rgba(218, 165, 32, 0.25);
+      padding: 0.0625rem 0.4375rem;
+      border-radius: 100px;
+      margin-left: 0.375rem;
+      vertical-align: middle;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .draft-badge {
+        color: #e0c060;
+        background: rgba(224, 192, 96, 0.12);
+        border-color: rgba(224, 192, 96, 0.25);
+      }
+    }
+
+    .draft-card {
+      border-left: 3px solid #daa520;
+    }
+
+    .draft-indicator {
+      font-size: 0.75rem;
+      color: #b07d24;
+      font-weight: 500;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .draft-indicator {
+        color: #e0c060;
+      }
+    }
+
     /* Editor split layout */
     .editor-split {
       display: flex;
@@ -1202,6 +1274,16 @@ permalink: /admin/
       background: #a93226;
     }
 
+    .btn-dialog.confirm-restore {
+      background: #daa520;
+      color: white;
+      border: none;
+    }
+
+    .btn-dialog.confirm-restore:hover {
+      background: #c49418;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
       .preview-pane {
@@ -1405,6 +1487,10 @@ permalink: /admin/
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
               Preview
             </button>
+            <button class="btn-draft" onclick="saveDraft()" id="btn-draft" title="Save draft to browser (Ctrl+S)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Draft
+            </button>
             <button class="btn-save" onclick="savePost()" id="btn-save">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               Publish
@@ -1492,6 +1578,8 @@ permalink: /admin/
     let editingPost = null; // { path, sha, filename }
     let easyMDE = null;
     let currentTags = [];
+    let currentDraftKey = null; // localStorage key for current draft
+    let draftAutoSaveTimer = null;
 
     // ===== AUTH =====
     async function sha256(text) {
@@ -1595,9 +1683,15 @@ permalink: /admin/
     function renderPostList() {
       const container = document.getElementById('post-list-container');
       const countEl = document.getElementById('post-count');
+      const drafts = getAllDrafts();
+
+      // Check for new-post draft
+      const newDraftKey = DRAFT_PREFIX + '_new_';
+      const newDraft = drafts[newDraftKey] || null;
+
       countEl.textContent = `(${posts.length})`;
 
-      if (posts.length === 0) {
+      if (posts.length === 0 && !newDraft) {
         container.innerHTML = `<div class="empty-state">
           <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           <h3>No posts yet</h3>
@@ -1607,12 +1701,40 @@ permalink: /admin/
       }
 
       let html = '<div class="post-list">';
+
+      // Show new-post draft at top if it exists
+      if (newDraft) {
+        const draftTitle = newDraft.title || 'Untitled draft';
+        const draftDate = newDraft.date || '';
+        const savedAt = new Date(newDraft.savedAt);
+        const timeStr = savedAt.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        html += `
+          <div class="post-card draft-card" onclick="openEditor()" style="animation-delay: 0s">
+            <div class="post-card-main">
+              <div class="post-card-title">${escapeHtml(draftTitle)}<span class="draft-badge">Draft</span></div>
+              <div class="post-card-meta">
+                <span class="post-card-date">${draftDate ? draftDate + ' &middot; ' : ''}Saved ${timeStr}</span>
+              </div>
+            </div>
+            <div class="post-card-actions">
+              <button class="post-action-btn" onclick="event.stopPropagation(); openEditor()" title="Edit draft">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="post-action-btn danger" onclick="event.stopPropagation(); discardNewDraft()" title="Discard draft">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          </div>`;
+      }
+
       posts.forEach((post, i) => {
         const info = parseFilename(post.name);
+        const postDraftKey = DRAFT_PREFIX + post.path;
+        const hasDraft = !!drafts[postDraftKey];
         html += `
-          <div class="post-card" onclick="editPost(${i})" style="animation-delay: ${i * 0.04}s">
+          <div class="post-card${hasDraft ? ' draft-card' : ''}" onclick="editPost(${i})" style="animation-delay: ${(i + (newDraft ? 1 : 0)) * 0.04}s">
             <div class="post-card-main">
-              <div class="post-card-title">${escapeHtml(info.title)}</div>
+              <div class="post-card-title">${escapeHtml(info.title)}${hasDraft ? '<span class="draft-badge">Draft</span>' : ''}</div>
               <div class="post-card-meta">
                 <span class="post-card-date">${info.date}</span>
               </div>
@@ -1629,6 +1751,21 @@ permalink: /admin/
       });
       html += '</div>';
       container.innerHTML = html;
+    }
+
+    function discardNewDraft() {
+      document.getElementById('dialog-title').textContent = 'Discard Draft?';
+      document.getElementById('dialog-message').textContent = 'This draft has not been published. Discard it permanently?';
+      const confirmBtn = document.getElementById('dialog-confirm');
+      confirmBtn.textContent = 'Discard';
+      confirmBtn.className = 'btn-dialog confirm-danger';
+      confirmBtn.onclick = () => {
+        deleteDraft(DRAFT_PREFIX + '_new_');
+        closeDialog();
+        renderPostList();
+        showToast('Draft discarded', 'success');
+      };
+      document.getElementById('confirm-dialog').classList.add('active');
     }
 
     function parseFilename(filename) {
@@ -1737,26 +1874,53 @@ permalink: /admin/
     function openEditor(post = null) {
       editingPost = post;
       currentTags = [];
+      currentDraftKey = draftKey(post);
 
       document.getElementById('list-view').style.display = 'none';
       document.getElementById('editor-view').classList.add('active');
 
       initEditor();
 
+      // Wire up auto-save on every change
+      easyMDE.codemirror.on('change', scheduleAutoSaveDraft);
+      document.getElementById('post-title').addEventListener('input', scheduleAutoSaveDraft);
+      document.getElementById('post-date').addEventListener('change', scheduleAutoSaveDraft);
+      document.getElementById('post-toc').addEventListener('change', scheduleAutoSaveDraft);
+      document.getElementById('post-math').addEventListener('change', scheduleAutoSaveDraft);
+
+      const existingDraft = getDraft(currentDraftKey);
+
       if (post) {
         // Editing existing post
-        document.getElementById('editor-status').textContent = 'Loading...';
-        loadPostContent(post);
+        const statusEl = document.getElementById('editor-status');
+        statusEl.textContent = 'Loading...';
+        statusEl.dataset.baseStatus = '';
+        loadPostContent(post).then(() => {
+          if (existingDraft) {
+            // A draft exists for this post - ask user
+            showDraftRestorePrompt(existingDraft);
+          }
+        });
       } else {
         // New post
-        document.getElementById('editor-status').textContent = 'New post';
-        document.getElementById('post-title').value = '';
-        document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
-        document.getElementById('post-toc').checked = false;
-        document.getElementById('post-math').checked = false;
-        currentTags = [];
-        renderTags();
-        easyMDE.value('');
+        const statusEl = document.getElementById('editor-status');
+        statusEl.dataset.baseStatus = 'New post';
+        if (existingDraft) {
+          // Restore new-post draft automatically
+          statusEl.textContent = 'New post';
+          restoreDraft(existingDraft);
+          updateDraftStatus();
+          showToast('Draft restored', 'success');
+        } else {
+          statusEl.textContent = 'New post';
+          document.getElementById('post-title').value = '';
+          document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+          document.getElementById('post-toc').checked = false;
+          document.getElementById('post-math').checked = false;
+          currentTags = [];
+          renderTags();
+          easyMDE.value('');
+        }
       }
     }
 
@@ -1779,7 +1943,9 @@ permalink: /admin/
         renderTags();
 
         easyMDE.value(parsed.body);
-        document.getElementById('editor-status').textContent = `Editing: ${post.name}`;
+        const statusEl = document.getElementById('editor-status');
+        statusEl.textContent = `Editing: ${post.name}`;
+        statusEl.dataset.baseStatus = `Editing: ${post.name}`;
         updatePreview();
       } catch (err) {
         showToast('Failed to load post: ' + err.message, 'error');
@@ -1788,6 +1954,13 @@ permalink: /admin/
     }
 
     function closeEditor() {
+      // Clean up auto-save listeners
+      clearTimeout(draftAutoSaveTimer);
+      document.getElementById('post-title').removeEventListener('input', scheduleAutoSaveDraft);
+      document.getElementById('post-date').removeEventListener('change', scheduleAutoSaveDraft);
+      document.getElementById('post-toc').removeEventListener('change', scheduleAutoSaveDraft);
+      document.getElementById('post-math').removeEventListener('change', scheduleAutoSaveDraft);
+
       document.getElementById('editor-view').classList.remove('active');
       document.getElementById('list-view').style.display = 'block';
       if (easyMDE) {
@@ -1795,8 +1968,11 @@ permalink: /admin/
         easyMDE = null;
       }
       editingPost = null;
+      currentDraftKey = null;
       // Reset preview
       document.getElementById('preview-content').innerHTML = '<div class="preview-empty">Start writing to see preview...</div>';
+      // Re-render post list to show draft badges
+      renderPostList();
     }
 
     async function editPost(index) {
@@ -1875,6 +2051,8 @@ permalink: /admin/
         });
 
         showToast(editingPost ? 'Post updated successfully' : 'Post published successfully', 'success');
+        // Clear draft on successful save
+        if (currentDraftKey) deleteDraft(currentDraftKey);
         closeEditor();
         loadPosts();
       } catch (err) {
@@ -1924,27 +2102,10 @@ permalink: /admin/
       }
     }
 
-    // ===== TAGS =====
-    const tagInput = document.getElementById('tag-input');
-    tagInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        const val = tagInput.value.trim();
-        if (val && !currentTags.includes(val)) {
-          currentTags.push(val);
-          renderTags();
-        }
-        tagInput.value = '';
-      }
-      if (e.key === 'Backspace' && !tagInput.value && currentTags.length) {
-        currentTags.pop();
-        renderTags();
-      }
-    });
-
     function removeTag(index) {
       currentTags.splice(index, 1);
       renderTags();
+      scheduleAutoSaveDraft();
     }
 
     function renderTags() {
@@ -1961,6 +2122,156 @@ permalink: /admin/
       });
       // Update live preview
       updatePreview();
+    }
+
+    const tagInput = document.getElementById('tag-input');
+    tagInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const val = tagInput.value.trim();
+        if (val && !currentTags.includes(val)) {
+          currentTags.push(val);
+          renderTags();
+          scheduleAutoSaveDraft();
+        }
+        tagInput.value = '';
+      }
+      if (e.key === 'Backspace' && !tagInput.value && currentTags.length) {
+        currentTags.pop();
+        renderTags();
+        scheduleAutoSaveDraft();
+      }
+    });
+
+    // ===== DRAFTS (localStorage) =====
+    const DRAFT_PREFIX = 'blog_draft_';
+
+    function draftKey(post) {
+      // For existing posts use their path, for new posts use a special key
+      return DRAFT_PREFIX + (post ? post.path : '_new_');
+    }
+
+    function getAllDrafts() {
+      const drafts = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(DRAFT_PREFIX)) {
+          try {
+            drafts[key] = JSON.parse(localStorage.getItem(key));
+          } catch (e) { /* ignore corrupt entries */ }
+        }
+      }
+      return drafts;
+    }
+
+    function getDraft(key) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+
+    function deleteDraft(key) {
+      localStorage.removeItem(key);
+    }
+
+    function collectEditorState() {
+      return {
+        title: document.getElementById('post-title').value,
+        date: document.getElementById('post-date').value,
+        tags: [...currentTags],
+        toc: document.getElementById('post-toc').checked,
+        math: document.getElementById('post-math').checked,
+        body: easyMDE ? easyMDE.value() : '',
+        savedAt: Date.now(),
+      };
+    }
+
+    function saveDraft() {
+      if (!currentDraftKey) return;
+      const state = collectEditorState();
+      localStorage.setItem(currentDraftKey, JSON.stringify(state));
+      showToast('Draft saved', 'success');
+      updateDraftStatus();
+    }
+
+    function autoSaveDraft() {
+      if (!currentDraftKey) return;
+      const state = collectEditorState();
+      localStorage.setItem(currentDraftKey, JSON.stringify(state));
+      updateDraftStatus();
+    }
+
+    function scheduleAutoSaveDraft() {
+      clearTimeout(draftAutoSaveTimer);
+      draftAutoSaveTimer = setTimeout(autoSaveDraft, 1500);
+    }
+
+    function updateDraftStatus() {
+      const draft = getDraft(currentDraftKey);
+      const statusEl = document.getElementById('editor-status');
+      if (draft) {
+        const when = new Date(draft.savedAt);
+        const timeStr = when.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const suffix = ` · <span class="draft-indicator">Draft saved ${timeStr}</span>`;
+        // Preserve the base status text
+        const base = statusEl.dataset.baseStatus || statusEl.textContent;
+        statusEl.dataset.baseStatus = base;
+        statusEl.innerHTML = base + suffix;
+      }
+    }
+
+    function restoreDraft(draft) {
+      document.getElementById('post-title').value = draft.title || '';
+      document.getElementById('post-date').value = draft.date || new Date().toISOString().split('T')[0];
+      document.getElementById('post-toc').checked = !!draft.toc;
+      document.getElementById('post-math').checked = !!draft.math;
+      currentTags = draft.tags || [];
+      renderTags();
+      if (easyMDE) easyMDE.value(draft.body || '');
+      updatePreview();
+    }
+
+    // Keyboard shortcut: Ctrl/Cmd+S to save draft
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (currentDraftKey && document.getElementById('editor-view').classList.contains('active')) {
+          saveDraft();
+        }
+      }
+    });
+
+    function showDraftRestorePrompt(draft) {
+      const when = new Date(draft.savedAt);
+      const timeStr = when.toLocaleString();
+      document.getElementById('dialog-title').textContent = 'Restore Draft?';
+      document.getElementById('dialog-message').textContent = `You have an unsaved draft from ${timeStr}. Would you like to restore it or discard it?`;
+      const confirmBtn = document.getElementById('dialog-confirm');
+      confirmBtn.textContent = 'Restore';
+      confirmBtn.className = 'btn-dialog confirm-restore';
+      confirmBtn.onclick = () => {
+        restoreDraft(draft);
+        updateDraftStatus();
+        closeDialog();
+        showToast('Draft restored', 'success');
+        // Reset button style
+        confirmBtn.textContent = 'Delete';
+        confirmBtn.className = 'btn-dialog confirm-danger';
+      };
+      // Override cancel to discard draft
+      const cancelBtn = document.querySelector('#confirm-dialog .btn-dialog.cancel');
+      const origCancel = cancelBtn.onclick;
+      cancelBtn.textContent = 'Discard';
+      cancelBtn.onclick = () => {
+        deleteDraft(currentDraftKey);
+        cancelBtn.textContent = 'Cancel';
+        cancelBtn.onclick = origCancel;
+        confirmBtn.textContent = 'Delete';
+        confirmBtn.className = 'btn-dialog confirm-danger';
+        closeDialog();
+      };
+      document.getElementById('confirm-dialog').classList.add('active');
     }
 
     // ===== UTILITIES =====
