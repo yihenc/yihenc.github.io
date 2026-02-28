@@ -1671,6 +1671,25 @@ permalink: /admin/
           .sort((a, b) => b.name.localeCompare(a.name));
 
         renderPostList();
+
+        // Background: fetch real titles for posts with empty/bad slug
+        const needTitle = posts.filter(p => {
+          const info = parseFilename(p.name);
+          return !info.title || info.title.trim() === '' || info.title === '-';
+        });
+        if (needTitle.length) {
+          await Promise.all(needTitle.map(async (post) => {
+            try {
+              const fileData = await githubAPI(`/contents/${post.path}?ref=${BRANCH}`);
+              const content = decodeBase64(fileData.content);
+              const parsed = parseFrontMatter(content);
+              if (parsed.frontMatter.title) {
+                post._title = parsed.frontMatter.title;
+              }
+            } catch (e) { /* skip */ }
+          }));
+          renderPostList();
+        }
       } catch (err) {
         container.innerHTML = `<div class="empty-state">
           <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -1729,12 +1748,13 @@ permalink: /admin/
 
       posts.forEach((post, i) => {
         const info = parseFilename(post.name);
+        const displayTitle = post._title || info.title || post.name;
         const postDraftKey = DRAFT_PREFIX + post.path;
         const hasDraft = !!drafts[postDraftKey];
         html += `
           <div class="post-card${hasDraft ? ' draft-card' : ''}" onclick="editPost(${i})" style="animation-delay: ${(i + (newDraft ? 1 : 0)) * 0.04}s">
             <div class="post-card-main">
-              <div class="post-card-title">${escapeHtml(info.title)}${hasDraft ? '<span class="draft-badge">Draft</span>' : ''}</div>
+              <div class="post-card-title">${escapeHtml(displayTitle)}${hasDraft ? '<span class="draft-badge">Draft</span>' : ''}</div>
               <div class="post-card-meta">
                 <span class="post-card-date">${info.date}</span>
               </div>
@@ -1769,14 +1789,17 @@ permalink: /admin/
     }
 
     function parseFilename(filename) {
-      // e.g. "2020-09-29-welcome-to-not-pure-poole.md"
+      // e.g. "2026-03-01-我的标题.md" or "2020-09-29-welcome-to-poole.md"
       const match = filename.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
       if (!match) return { date: '', title: filename, slug: filename };
-      return {
-        date: match[1],
-        title: match[2].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-        slug: match[2]
-      };
+      const slug = match[2];
+      // For CJK slugs, just replace hyphens with spaces
+      // For Latin slugs, also capitalize words
+      const hasCJK = /[\u4e00-\u9fff\u3400-\u4dbf]/.test(slug);
+      const title = hasCJK
+        ? slug.replace(/-/g, ' ')
+        : slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      return { date: match[1], title, slug };
     }
 
     // ===== EDITOR =====
@@ -2013,24 +2036,23 @@ permalink: /admin/
       fm += `---\n`;
 
       const fullContent = fm + body + '\n';
-      // Generate slug: keep CJK chars, Latin alphanum, hyphens
-      let slug = title.toLowerCase()
+      // Generate slug from title: keep CJK chars, Latin alphanum, hyphens
+      let slug = title
         .replace(/[^\w\s\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\uff00-\uffef-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '')
-        .substring(0, 60);
+        .substring(0, 80);
       // If slug is empty (e.g. all special chars), use timestamp
       if (!slug) slug = `post-${Date.now()}`;
 
       let filename, path;
       if (editingPost) {
-        // When editing, keep original filename by default unless title/date changed
-        const origInfo = parseFilename(editingPost.name);
-        if (origInfo.date === date && editingPost.path) {
-          // Date unchanged: keep the original filename to avoid unnecessary renames
-          filename = editingPost.name;
-        } else {
+        // Editing: keep original filename unless title changed
+        filename = editingPost.name;
+        // If title changed, regenerate filename
+        const origSlug = editingPost.name.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
+        if (slug !== origSlug) {
           filename = `${date}-${slug}.md`;
         }
       } else {
@@ -2067,16 +2089,11 @@ permalink: /admin/
           }
         } else if (!editingPost) {
           // New post: check if a file with same name already exists
-          // (e.g. same date + similar slug). If so, get its sha to update it,
-          // or append a suffix to avoid collision.
           try {
             const existing = await githubAPI(`/contents/${path}?ref=${BRANCH}`);
             if (existing && existing.sha) {
-              // File already exists — append timestamp suffix to avoid collision
-              const uniqueSuffix = Date.now().toString(36);
-              slug = slug + '-' + uniqueSuffix;
-              filename = `${date}-${slug}.md`;
-              path = `_posts/${filename}`;
+              showToast('A post with the same title already exists on this date. Please use a different title.', 'error');
+              return;
             }
           } catch (e) {
             // 404 = file doesn't exist, which is what we want for new posts

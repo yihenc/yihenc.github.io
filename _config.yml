@@ -5,6 +5,7 @@ url: https://yihenc.github.io
 avatar: /avatar.jpeg
 paginate: 10
 permalink: pretty
+future: true
 cover_image: /bg.jpeg
 
 # Gems
