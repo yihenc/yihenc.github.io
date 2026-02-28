@@ -1881,13 +1881,6 @@ permalink: /admin/
 
       initEditor();
 
-      // Wire up auto-save on every change
-      easyMDE.codemirror.on('change', scheduleAutoSaveDraft);
-      document.getElementById('post-title').addEventListener('input', scheduleAutoSaveDraft);
-      document.getElementById('post-date').addEventListener('change', scheduleAutoSaveDraft);
-      document.getElementById('post-toc').addEventListener('change', scheduleAutoSaveDraft);
-      document.getElementById('post-math').addEventListener('change', scheduleAutoSaveDraft);
-
       const existingDraft = getDraft(currentDraftKey);
 
       if (post) {
@@ -1896,6 +1889,8 @@ permalink: /admin/
         statusEl.textContent = 'Loading...';
         statusEl.dataset.baseStatus = '';
         loadPostContent(post).then(() => {
+          // Wire up auto-save AFTER content is loaded to avoid false drafts
+          wireAutoSave();
           if (existingDraft) {
             // A draft exists for this post - ask user
             showDraftRestorePrompt(existingDraft);
@@ -1921,7 +1916,17 @@ permalink: /admin/
           renderTags();
           easyMDE.value('');
         }
+        // Wire up auto-save for new posts after initial values are set
+        wireAutoSave();
       }
+    }
+
+    function wireAutoSave() {
+      easyMDE.codemirror.on('change', scheduleAutoSaveDraft);
+      document.getElementById('post-title').addEventListener('input', scheduleAutoSaveDraft);
+      document.getElementById('post-date').addEventListener('change', scheduleAutoSaveDraft);
+      document.getElementById('post-toc').addEventListener('change', scheduleAutoSaveDraft);
+      document.getElementById('post-math').addEventListener('change', scheduleAutoSaveDraft);
     }
 
     async function loadPostContent(post) {
@@ -2008,13 +2013,30 @@ permalink: /admin/
       fm += `---\n`;
 
       const fullContent = fm + body + '\n';
-      const slug = title.toLowerCase()
-        .replace(/[^\w\s-]/g, '')
+      // Generate slug: keep CJK chars, Latin alphanum, hyphens
+      let slug = title.toLowerCase()
+        .replace(/[^\w\s\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\uff00-\uffef-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
         .substring(0, 60);
-      const filename = `${date}-${slug}.md`;
-      const path = `_posts/${filename}`;
+      // If slug is empty (e.g. all special chars), use timestamp
+      if (!slug) slug = `post-${Date.now()}`;
+
+      let filename, path;
+      if (editingPost) {
+        // When editing, keep original filename by default unless title/date changed
+        const origInfo = parseFilename(editingPost.name);
+        if (origInfo.date === date && editingPost.path) {
+          // Date unchanged: keep the original filename to avoid unnecessary renames
+          filename = editingPost.name;
+        } else {
+          filename = `${date}-${slug}.md`;
+        }
+      } else {
+        filename = `${date}-${slug}.md`;
+      }
+      path = `_posts/${filename}`;
 
       const btn = document.getElementById('btn-save');
       btn.disabled = true;
@@ -2042,6 +2064,22 @@ permalink: /admin/
             });
           } else {
             payload.sha = editingPost.sha;
+          }
+        } else if (!editingPost) {
+          // New post: check if a file with same name already exists
+          // (e.g. same date + similar slug). If so, get its sha to update it,
+          // or append a suffix to avoid collision.
+          try {
+            const existing = await githubAPI(`/contents/${path}?ref=${BRANCH}`);
+            if (existing && existing.sha) {
+              // File already exists — append timestamp suffix to avoid collision
+              const uniqueSuffix = Date.now().toString(36);
+              slug = slug + '-' + uniqueSuffix;
+              filename = `${date}-${slug}.md`;
+              path = `_posts/${filename}`;
+            }
+          } catch (e) {
+            // 404 = file doesn't exist, which is what we want for new posts
           }
         }
 
