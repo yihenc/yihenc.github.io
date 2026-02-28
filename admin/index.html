@@ -2048,11 +2048,11 @@ permalink: /admin/
 
       let filename, path;
       if (editingPost) {
-        // Editing: keep original filename unless title changed
+        // Editing: keep original filename unless title or date changed
         filename = editingPost.name;
-        // If title changed, regenerate filename
         const origSlug = editingPost.name.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
-        if (slug !== origSlug) {
+        const origDate = editingPost.name.substring(0, 10);
+        if (slug !== origSlug || date !== origDate) {
           filename = `${date}-${slug}.md`;
         }
       } else {
