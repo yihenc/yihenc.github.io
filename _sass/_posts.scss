@@ -20,6 +20,10 @@
     font-family: var(--body-font);
   }
 
+  p {
+    text-indent: 2em;
+  }
+
   li + li {
     margin-top: 0.25rem;
   }

@@ -41,6 +41,9 @@ social:
 #google_site_verification: xxxxx
 lang: en
 
+kramdown:
+  hard_wrap: true
+
 sass:
   sass_dir: _sass
   style: :compressed

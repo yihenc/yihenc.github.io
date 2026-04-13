@@ -875,7 +875,7 @@ permalink: /admin/
     .preview-content-inner h1 { font-family: 'DM Sans', sans-serif; font-size: 1.5em; margin-top: 2rem; }
     .preview-content-inner h2 { font-family: 'DM Sans', sans-serif; font-size: 1.3em; margin-top: 2rem; border-bottom: none; }
     .preview-content-inner h3 { font-family: 'DM Sans', sans-serif; font-size: 1.1em; margin-top: 1.5rem; }
-    .preview-content-inner p { margin-bottom: 1rem; }
+    .preview-content-inner p { margin-bottom: 1rem; text-indent: 2em; }
     .preview-content-inner hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
     .preview-content-inner blockquote {
       padding: 0.75rem 1.25rem;
@@ -1567,6 +1567,9 @@ permalink: /admin/
     const REPO_OWNER = 'yihenc';
     const REPO_NAME = 'yihenc.github.io';
     const BRANCH = 'main';
+
+    // Configure marked.js to match Jekyll's hard_wrap behavior
+    marked.use({ breaks: true });
     // SHA-256 hash of admin password — default is "admin" for first setup
     // Replace with your own: run in browser console:
     //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR_PASSWORD')).then(h => console.log([...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('')))
